@@ -1,0 +1,8 @@
+{
+  "version": 3,
+  "sources": ["../../../src/index.js"],
+  "sourceRoot": "/Users/rachelyun/CascadeProjects/marketing-agent-project-tracker/.wrangler/tmp/deploy-JGJDZI",
+  "sourcesContent": ["export default {\n\tasync fetch(request, env, ctx) {\n\t\treturn new Response('Hello from marketing-agent-project-tracker!', {\n\t\t\theaders: { 'content-type': 'text/plain' },\n\t\t});\n\t},\n};\n"],
+  "mappings": ";AAAA,IAAO,gBAAQ;AAAA,EACd,MAAM,MAAM,SAAS,KAAK,KAAK;AAC9B,WAAO,IAAI,SAAS,+CAA+C;AAAA,MAClE,SAAS,EAAE,gBAAgB,aAAa;AAAA,IACzC,CAAC;AAAA,EACF;AACD;",
+  "names": []
+}

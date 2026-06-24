@@ -1,0 +1,8 @@
+name = "marketing-agent-project-tracker"
+main = "src/index.js"
+compatibility_date = "2026-06-23"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "marketing-agent-projects"
+database_id = "103ee23c-ab58-4fd8-b86b-da27579bb098"
