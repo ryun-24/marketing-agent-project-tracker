@@ -2079,9 +2079,26 @@ export function getPage(projectId, user = null) {
             try {
                 const res = await fetch('/api/projects');
                 if (!res.ok) throw new Error('API error: ' + res.status);
-                const projects = await res.json();
-                allProjects = projects || [];
-                filteredProjects = projects || [];
+                const apiProjects = await res.json();
+                
+                // DEMO: Add mock projects for visualization
+                const demoProjects = [
+                    { id: 101, name: 'AI Content Generator v2', description: 'Automated content creation with GPT-4 integration', stage: 'now', status: 'on_track', owner: 'Sarah Chen', team: 'Content Team', open_blockers: 0, updated_at: new Date().toISOString() },
+                    { id: 102, name: 'Marketing Analytics Dashboard', description: 'Real-time campaign performance tracking', stage: 'now', status: 'at_risk', owner: 'Mike Johnson', team: 'Analytics', open_blockers: 1, updated_at: new Date().toISOString() },
+                    { id: 103, name: 'Email Automation Flow', description: 'Drip campaign sequences and A/B testing', stage: 'now', status: 'on_track', owner: 'Emily Wang', team: 'Growth', open_blockers: 0, updated_at: new Date().toISOString() },
+                    { id: 104, name: 'SEO Optimization Tool', description: 'Keyword research and competitor analysis', stage: 'next', status: 'on_track', owner: 'David Park', team: 'SEO Team', open_blockers: 0, updated_at: new Date().toISOString() },
+                    { id: 105, name: 'Social Media Scheduler', description: 'Cross-platform posting with analytics', stage: 'next', status: 'blocked', owner: 'Lisa Kumar', team: 'Social', open_blockers: 2, updated_at: new Date().toISOString() },
+                    { id: 106, name: 'Landing Page Builder', description: 'Drag-and-drop page creation tool', stage: 'later', status: 'on_track', owner: 'Tom Wilson', team: 'Product', open_blockers: 0, updated_at: new Date().toISOString() },
+                    { id: 107, name: 'CRM Integration', description: 'Salesforce and HubSpot connectors', stage: 'later', status: 'on_track', owner: 'Alex Rivera', team: 'Engineering', open_blockers: 0, updated_at: new Date().toISOString() },
+                    { id: 108, name: 'Video Transcription API', description: 'Automated video captioning service', stage: 'later', status: 'at_risk', owner: 'Nina Patel', team: 'AI Team', open_blockers: 1, updated_at: new Date().toISOString() }
+                ];
+                
+                // Merge real projects with demo projects (avoid duplicates)
+                const realIds = new Set((apiProjects || []).map(p => p.id));
+                const uniqueDemoProjects = demoProjects.filter(p => !realIds.has(p.id));
+                allProjects = [...(apiProjects || []), ...uniqueDemoProjects];
+                
+                filteredProjects = allProjects;
                 console.log('Loaded projects:', allProjects.length);
                 renderProjectsList();
                 updateStats(allProjects);
