@@ -1068,12 +1068,13 @@ export function getPage(projectId, user = null) {
         .shipped-table {
             width: 100%;
             border-collapse: collapse;
+            table-layout: fixed;
         }
         
         .shipped-table th {
             text-align: left;
             padding: 12px 20px;
-            font-size: 12px;
+            font-size: 11px;
             font-weight: 500;
             color: var(--text-muted);
             text-transform: uppercase;
@@ -1081,10 +1082,19 @@ export function getPage(projectId, user = null) {
             border-bottom: 1px solid var(--border);
         }
         
+        .shipped-table th:last-child {
+            text-align: right;
+        }
+        
         .shipped-table td {
             padding: 14px 20px;
             font-size: 14px;
             border-bottom: 1px solid var(--border);
+            vertical-align: middle;
+        }
+        
+        .shipped-table td:last-child {
+            text-align: right;
         }
         
         .shipped-table tbody tr {
@@ -1100,16 +1110,16 @@ export function getPage(projectId, user = null) {
             border-bottom: none;
         }
         
-        .col-project {
-            width: 50%;
+        .shipped-table .col-project {
+            width: 55%;
         }
         
-        .col-team {
+        .shipped-table .col-team {
             width: 30%;
         }
         
-        .col-date {
-            width: 20%;
+        .shipped-table .col-date {
+            width: 15%;
             text-align: right;
         }
         
@@ -1124,7 +1134,6 @@ export function getPage(projectId, user = null) {
         
         .shipped-date-cell {
             color: var(--text-muted);
-            text-align: right;
         }
         
         .shipped-empty {
