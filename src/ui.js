@@ -791,9 +791,16 @@ export function getPage(projectId, user = null) {
             font-weight: 500;
         }
         
+        .top-bar-center {
+            position: relative;
+            flex: 1;
+            max-width: 400px;
+            margin: 0 auto;
+        }
+        
         .search-box {
             position: relative;
-            width: 400px;
+            width: 100%;
         }
         
         .search-box svg {
@@ -823,6 +830,39 @@ export function getPage(projectId, user = null) {
             background: var(--bg);
             padding: 2px 6px;
             border-radius: 4px;
+        }
+        
+        .search-results-indicator {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            margin-top: 4px;
+            padding: 8px 12px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: var(--shadow);
+            z-index: 100;
+        }
+        
+        .clear-search {
+            background: transparent;
+            border: none;
+            color: var(--accent);
+            font-size: 12px;
+            cursor: pointer;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .clear-search:hover {
+            background: var(--bg);
         }
         
         .top-bar-right {
@@ -2042,8 +2082,12 @@ export function getPage(projectId, user = null) {
                             <circle cx="11" cy="11" r="8"></circle>
                             <path d="m21 21-4.35-4.35"></path>
                         </svg>
-                        <input type="text" id="searchInput" placeholder="Search projects..." onkeyup="filterProjects()">
+                        <input type="text" id="searchInput" placeholder="Search projects..." onkeyup="filterProjects()" onfocus="showSearchActive()" onblur="hideSearchActive()">
                         <span class="search-shortcut">⌘K</span>
+                    </div>
+                    <div class="search-results-indicator" id="searchIndicator" style="display:none;">
+                        <span id="searchCount">0</span> projects found
+                        <button class="clear-search" onclick="clearSearch()">Clear</button>
                     </div>
                 </div>
                 
@@ -2363,12 +2407,48 @@ export function getPage(projectId, user = null) {
 
         function filterProjects() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            filteredProjects = allProjects.filter(p => 
-                p.name.toLowerCase().includes(searchTerm) || 
-                (p.description && p.description.toLowerCase().includes(searchTerm)) ||
-                (p.team && p.team.toLowerCase().includes(searchTerm))
-            );
+            const indicator = document.getElementById('searchIndicator');
+            const countSpan = document.getElementById('searchCount');
+            
+            if (searchTerm === '') {
+                filteredProjects = allProjects;
+                if (indicator) indicator.style.display = 'none';
+            } else {
+                filteredProjects = allProjects.filter(p => 
+                    p.name.toLowerCase().includes(searchTerm) || 
+                    (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+                    (p.team && p.team.toLowerCase().includes(searchTerm))
+                );
+                if (indicator) {
+                    indicator.style.display = 'flex';
+                    if (countSpan) countSpan.textContent = filteredProjects.length;
+                }
+            }
             renderProjectsList();
+        }
+        
+        function showSearchActive() {
+            const searchTerm = document.getElementById('searchInput').value;
+            if (searchTerm) {
+                const indicator = document.getElementById('searchIndicator');
+                if (indicator) indicator.style.display = 'flex';
+            }
+        }
+        
+        function hideSearchActive() {
+            setTimeout(() => {
+                const indicator = document.getElementById('searchIndicator');
+                if (indicator && !indicator.matches(':hover')) {
+                    indicator.style.display = 'none';
+                }
+            }, 200);
+        }
+        
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchIndicator').style.display = 'none';
+            filterProjects();
+            document.getElementById('searchInput').focus();
         }
 
         function updateStats(projects) {
