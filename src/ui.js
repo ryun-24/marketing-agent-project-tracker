@@ -1,157 +1,294 @@
-// UI Template for Project Tracker
+// UI Template for Project Tracker - Clean Professional Design
 
 export const html = `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Marketing Agent Project Tracker</title>
+    <title>Project Tracker | Marketing Agents</title>
     <style>
+        :root {
+            --bg: #fafafa;
+            --surface: #ffffff;
+            --border: #e5e5e5;
+            --text-primary: #171717;
+            --text-secondary: #737373;
+            --text-muted: #a3a3a3;
+            --accent: #f97316;
+            --accent-light: #fff7ed;
+            --success: #22c55e;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --now: #dcfce7;
+            --now-text: #166534;
+            --next: #dbeafe;
+            --next-text: #1e40af;
+            --later: #f3e8ff;
+            --later-text: #6b21a8;
+        }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: #f5f7fa;
-            color: #333;
-            line-height: 1.6;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+            background: var(--bg);
+            color: var(--text-primary);
+            line-height: 1.5;
+            -webkit-font-smoothing: antialiased;
         }
-        .container {
-            max-width: 1400px;
+        
+        /* Header */
+        .header {
+            background: var(--surface);
+            border-bottom: 1px solid var(--border);
+            padding: 16px 24px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .header-content {
+            max-width: 1600px;
             margin: 0 auto;
-            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        header {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
         }
-        header h1 {
-            font-size: 2em;
-            margin-bottom: 10px;
+        
+        .header h1 {
+            font-size: 18px;
+            font-weight: 600;
+            letter-spacing: -0.01em;
         }
-        header p {
-            opacity: 0.9;
+        
+        .header-subtitle {
+            font-size: 13px;
+            color: var(--text-secondary);
         }
-        .add-btn {
-            background: #48bb78;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+        
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
             cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-            transition: all 0.2s;
+            transition: all 0.15s ease;
+            border: none;
         }
-        .add-btn:hover {
-            background: #38a169;
-            transform: translateY(-2px);
+        
+        .btn-primary {
+            background: var(--text-primary);
+            color: white;
         }
+        
+        .btn-primary:hover {
+            background: #404040;
+        }
+        
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--bg);
+        }
+        
+        /* Main Content */
+        .main {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 24px;
+        }
+        
+        /* Board Layout */
         .board {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
+            gap: 24px;
+            align-items: start;
         }
-        @media (max-width: 900px) {
+        
+        @media (max-width: 1024px) {
             .board { grid-template-columns: 1fr; }
         }
+        
+        /* Column */
         .column {
-            background: white;
-            border-radius: 12px;
-            padding: 20px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: transparent;
         }
+        
         .column-header {
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 2px solid #e2e8f0;
+            gap: 12px;
+            margin-bottom: 16px;
+            padding: 0 4px;
         }
-        .column-header h2 {
-            font-size: 1.3em;
-            font-weight: 600;
-        }
-        .badge {
-            background: #e2e8f0;
-            padding: 4px 12px;
-            border-radius: 20px;
-            font-size: 0.85em;
-            font-weight: 500;
-        }
-        .badge.now { background: #c6f6d5; color: #22543d; }
-        .badge.next { background: #bee3f8; color: #2a4365; }
-        .badge.later { background: #e9d8fd; color: #44337a; }
-        .card {
-            background: #f8fafc;
-            border: 1px solid #e2e8f0;
-            border-radius: 8px;
-            padding: 16px;
-            margin-bottom: 12px;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .card:hover {
-            border-color: #667eea;
-            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
-            transform: translateY(-2px);
-        }
-        .card-title {
-            font-weight: 600;
-            font-size: 1.05em;
-            margin-bottom: 8px;
-            color: #2d3748;
-        }
-        .card-meta {
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-            font-size: 0.85em;
-            color: #718096;
-            margin-bottom: 10px;
-        }
-        .status-badge {
-            padding: 3px 10px;
-            border-radius: 20px;
-            font-size: 0.75em;
+        
+        .column-title {
+            font-size: 13px;
             font-weight: 600;
             text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--text-secondary);
         }
-        .status-on_track { background: #c6f6d5; color: #22543d; }
-        .status-at_risk { background: #feebc8; color: #744210; }
-        .status-blocked { background: #fed7d7; color: #742a2a; }
-        .status-completed { background: #e2e8f0; color: #4a5568; }
-        .card-preview {
-            font-size: 0.9em;
-            color: #4a5568;
+        
+        .count {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-width: 24px;
+            height: 24px;
+            padding: 0 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .count.now { background: var(--now); color: var(--now-text); }
+        .count.next { background: var(--next); color: var(--next-text); }
+        .count.later { background: var(--later); color: var(--later-text); }
+        
+        /* Cards */
+        .card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        
+        .card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .card:hover {
+            border-color: #d4d4d4;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            transform: translateY(-1px);
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 8px;
+        }
+        
+        .card-title {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+            color: var(--text-primary);
+        }
+        
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
             line-height: 1.5;
+            margin-bottom: 12px;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
             overflow: hidden;
         }
+        
         .card-footer {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #e2e8f0;
-            font-size: 0.85em;
+            justify-content: space-between;
+            gap: 8px;
         }
-        .blocker-indicator {
-            color: #e53e3e;
+        
+        .card-meta {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .status-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.02em;
+        }
+        
+        .status-on_track { background: #dcfce7; color: #166534; }
+        .status-at_risk { background: #fef3c7; color: #92400e; }
+        .status-blocked { background: #fee2e2; color: #991b1b; }
+        .status-completed { background: #f3f4f6; color: #374151; }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+        }
+        
+        .status-on_track .status-dot { background: var(--success); }
+        .status-at_risk .status-dot { background: var(--warning); }
+        .status-blocked .status-dot { background: var(--danger); }
+        
+        .owner {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
             font-weight: 600;
         }
-        .owner-tag {
-            background: #edf2f7;
-            padding: 3px 10px;
-            border-radius: 20px;
-            color: #4a5568;
+        
+        .blocker-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+            background: #fee2e2;
+            color: #991b1b;
         }
-        /* Modal Styles */
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px 20px;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        
+        /* Modal */
         .modal-overlay {
             display: none;
             position: fixed;
@@ -163,167 +300,285 @@ export const html = `<!DOCTYPE html>
             z-index: 1000;
             align-items: center;
             justify-content: center;
+            padding: 24px;
         }
+        
         .modal-overlay.active {
             display: flex;
         }
+        
         .modal {
-            background: white;
+            background: var(--surface);
             border-radius: 12px;
-            width: 90%;
-            max-width: 700px;
-            max-height: 90vh;
-            overflow-y: auto;
-            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
-        }
-        .modal-header {
-            padding: 24px;
-            border-bottom: 1px solid #e2e8f0;
+            width: 100%;
+            max-width: 600px;
+            max-height: calc(100vh - 48px);
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
             display: flex;
-            justify-content: space-between;
+            flex-direction: column;
+        }
+        
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
             align-items: center;
+            justify-content: space-between;
         }
+        
         .modal-header h2 {
-            font-size: 1.5em;
-            color: #2d3748;
+            font-size: 16px;
+            font-weight: 600;
         }
+        
         .modal-close {
             background: none;
             border: none;
-            font-size: 1.5em;
+            font-size: 20px;
             cursor: pointer;
-            color: #718096;
-            padding: 5px;
+            color: var(--text-muted);
+            padding: 4px;
+            line-height: 1;
         }
+        
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+        
         .modal-body {
             padding: 24px;
+            overflow-y: auto;
         }
+        
+        /* Forms */
         .form-group {
             margin-bottom: 20px;
         }
+        
         .form-group label {
             display: block;
             margin-bottom: 6px;
+            font-size: 13px;
             font-weight: 500;
-            color: #4a5568;
+            color: var(--text-primary);
         }
+        
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 10px 14px;
-            border: 1px solid #e2e8f0;
+            padding: 10px 12px;
+            border: 1px solid var(--border);
             border-radius: 6px;
-            font-size: 15px;
+            font-size: 14px;
             font-family: inherit;
+            background: var(--surface);
+            color: var(--text-primary);
+            transition: border-color 0.15s ease;
         }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #a3a3a3;
+        }
+        
         .form-group textarea {
             min-height: 100px;
             resize: vertical;
         }
+        
         .form-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 15px;
+            gap: 16px;
         }
-        .detail-section {
+        
+        /* Detail View */
+        .detail-header {
             margin-bottom: 24px;
         }
-        .detail-section h3 {
-            font-size: 1.1em;
+        
+        .detail-title {
+            font-size: 20px;
+            font-weight: 600;
             margin-bottom: 12px;
-            color: #4a5568;
+        }
+        
+        .detail-meta {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 12px;
+            flex-wrap: wrap;
         }
-        .update-item, .blocker-item {
-            background: #f8fafc;
-            border-left: 3px solid #667eea;
-            padding: 12px 16px;
-            margin-bottom: 10px;
-            border-radius: 0 6px 6px 0;
+        
+        .detail-meta-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--text-secondary);
         }
-        .update-item {
-            border-left-color: #667eea;
+        
+        .detail-section {
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
         }
+        
+        .detail-section:last-child {
+            border-bottom: none;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 16px;
+        }
+        
+        .section-title {
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            color: var(--text-secondary);
+        }
+        
+        .item-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .item {
+            background: var(--bg);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .item-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .item-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .item-content {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+        
         .blocker-item {
-            border-left-color: #e53e3e;
-            background: #fff5f5;
+            background: #fef2f2;
+            border-left: 3px solid var(--danger);
         }
-        .update-meta, .blocker-meta {
-            font-size: 0.8em;
-            color: #718096;
-            margin-bottom: 4px;
+        
+        .severity {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+            background: #fee2e2;
+            color: #991b1b;
         }
-        .btn-primary {
-            background: #667eea;
-            color: white;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-            font-weight: 500;
+        
+        .link-list {
+            display: flex;
+            gap: 12px;
         }
-        .btn-primary:hover {
-            background: #5a67d8;
+        
+        .link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            color: var(--accent);
+            text-decoration: none;
         }
-        .btn-secondary {
-            background: #e2e8f0;
-            color: #4a5568;
-            border: none;
-            padding: 12px 24px;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 15px;
-            margin-left: 10px;
+        
+        .link:hover {
+            text-decoration: underline;
         }
+        
         .loading {
-            text-align: center;
-            padding: 40px;
-            color: #718096;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 200px;
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+        
+        .spinner {
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--border);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-right: 12px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Marketing Agent Project Tracker</h1>
-            <p>Track all AI agent projects across the marketing division</p>
-            <button class="add-btn" onclick="openCreateModal()">+ New Project</button>
-        </header>
+    <header class="header">
+        <div class="header-content">
+            <div class="header-left">
+                <h1>Project Tracker</h1>
+                <span class="header-subtitle">Marketing Agents</span>
+            </div>
+            <button class="btn btn-primary" onclick="openCreateModal()">
+                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+                New Project
+            </button>
+        </div>
+    </header>
 
+    <main class="main">
         <div class="board" id="board">
             <div class="column" data-stage="now">
                 <div class="column-header">
-                    <h2>Now</h2>
-                    <span class="badge now" id="count-now">0</span>
+                    <span class="column-title">Now</span>
+                    <span class="count now" id="count-now">0</span>
                 </div>
                 <div id="list-now" class="card-list">
-                    <div class="loading">Loading...</div>
+                    <div class="loading"><div class="spinner"></div> Loading projects...</div>
                 </div>
             </div>
             <div class="column" data-stage="next">
                 <div class="column-header">
-                    <h2>Next</h2>
-                    <span class="badge next" id="count-next">0</span>
+                    <span class="column-title">Next</span>
+                    <span class="count next" id="count-next">0</span>
                 </div>
                 <div id="list-next" class="card-list">
-                    <div class="loading">Loading...</div>
+                    <div class="loading"><div class="spinner"></div> Loading projects...</div>
                 </div>
             </div>
             <div class="column" data-stage="later">
                 <div class="column-header">
-                    <h2>Later</h2>
-                    <span class="badge later" id="count-later">0</span>
+                    <span class="column-title">Later</span>
+                    <span class="count later" id="count-later">0</span>
                 </div>
                 <div id="list-later" class="card-list">
-                    <div class="loading">Loading...</div>
+                    <div class="loading"><div class="spinner"></div> Loading projects...</div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
 
     <!-- Create Project Modal -->
     <div class="modal-overlay" id="createModal">
@@ -454,21 +709,27 @@ export const html = `<!DOCTYPE html>
         function renderCard(project) {
             const statusClass = 'status-' + project.status;
             const statusLabel = project.status.replace('_', ' ');
+            const statusDot = '<span class="status-dot"></span>';
             const blockerBadge = project.open_blockers > 0 
-                ? '<span class="blocker-indicator">⚠️ ' + project.open_blockers + ' blocker' + (project.open_blockers > 1 ? 's' : '') + '</span>' 
+                ? '<span class="blocker-badge">⚠️ ' + project.open_blockers + '</span>' 
                 : '';
+            const initials = project.owner ? project.owner.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
             
             return [
                 '<div class="card" onclick="openDetail(' + project.id + ')">',
-                '    <div class="card-title">' + escapeHtml(project.name) + '</div>',
-                '    <div class="card-meta">',
-                '        <span class="status-badge ' + statusClass + '">' + statusLabel + '</span>',
-                '        <span>' + escapeHtml(project.team || 'No team') + '</span>',
+                '    <div class="card-header">',
+                '        <div class="card-title">' + escapeHtml(project.name) + '</div>',
+                blockerBadge,
                 '    </div>',
-                '    <div class="card-preview">' + escapeHtml(project.description || 'No description') + '</div>',
+                '    <div class="card-desc">' + escapeHtml(project.description || 'No description') + '</div>',
                 '    <div class="card-footer">',
-                '        ' + blockerBadge,
-                '        <span class="owner-tag">' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                '        <div class="card-meta">',
+                '            <span class="status-pill ' + statusClass + '">' + statusDot + statusLabel + '</span>',
+                '            <span>' + escapeHtml(project.team || 'No team') + '</span>',
+                '        </div>',
+                '        <div class="owner">',
+                '            <div class="avatar">' + initials + '</div>',
+                '        </div>',
                 '    </div>',
                 '</div>'
             ].join('');
@@ -491,50 +752,61 @@ export const html = `<!DOCTYPE html>
             
             const statusClass = 'status-' + project.status;
             const statusLabel = project.status.replace('_', ' ');
+            const statusDot = '<span class="status-dot"></span>';
             
             let updatesHtml = project.updates?.length 
                 ? project.updates.map(u => [
-                    '<div class="update-item">',
-                    '    <div class="update-meta">' + escapeHtml(u.update_type) + ' • ' + new Date(u.created_at).toLocaleDateString() + ' • ' + escapeHtml(u.created_by || 'Unknown') + '</div>',
-                    '    <div>' + escapeHtml(u.content) + '</div>',
+                    '<div class="item">',
+                    '    <div class="item-header">',
+                    '        <span class="item-meta">' + escapeHtml(u.update_type) + ' • ' + new Date(u.created_at).toLocaleDateString() + '</span>',
+                    '        <span class="item-meta">' + escapeHtml(u.created_by || 'Unknown') + '</span>',
+                    '    </div>',
+                    '    <div class="item-content">' + escapeHtml(u.content) + '</div>',
                     '</div>'
                 ].join('')).join('')
-                : '<p style="color:#718096;font-style:italic;">No updates yet</p>';
+                : '<p class="empty-state">No updates yet</p>';
             
             let blockersHtml = project.blockers?.length
                 ? project.blockers.map(b => [
-                    '<div class="blocker-item">',
-                    '    <div class="blocker-meta">' + escapeHtml(b.severity) + ' priority • Open since ' + new Date(b.created_at).toLocaleDateString() + '</div>',
-                    '    <div>' + escapeHtml(b.description) + '</div>',
+                    '<div class="item blocker-item">',
+                    '    <div class="item-header">',
+                    '        <span class="severity">' + escapeHtml(b.severity) + '</span>',
+                    '        <span class="item-meta">Open since ' + new Date(b.created_at).toLocaleDateString() + '</span>',
+                    '    </div>',
+                    '    <div class="item-content">' + escapeHtml(b.description) + '</div>',
                     '</div>'
                 ].join('')).join('')
-                : '<p style="color:#718096;font-style:italic;">No open blockers 🎉</p>';
+                : '<p class="empty-state">No open blockers</p>';
 
             const links = [];
-            if (project.gitlab_url) links.push('<a href="' + project.gitlab_url + '" target="_blank" style="color:#667eea;">GitLab</a>');
-            if (project.github_url) links.push('<a href="' + project.github_url + '" target="_blank" style="color:#667eea;">GitHub</a>');
+            if (project.gitlab_url) links.push('<a href="' + project.gitlab_url + '" target="_blank" class="link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>GitLab</a>');
+            if (project.github_url) links.push('<a href="' + project.github_url + '" target="_blank" class="link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>GitHub</a>');
             
             document.getElementById('detailBody').innerHTML = [
-                '<div class="detail-section">',
-                '    <p style="margin-bottom:15px;color:#4a5568;">' + escapeHtml(project.description || 'No description') + '</p>',
-                '    <div style="display:flex;gap:15px;margin-bottom:15px;flex-wrap:wrap;">',
-                '        <span class="status-badge ' + statusClass + '">' + statusLabel + '</span>',
-                '        <span style="color:#718096;">📁 ' + escapeHtml(project.team || 'No team') + '</span>',
-                '        <span style="color:#718096;">👤 ' + escapeHtml(project.owner || 'Unassigned') + '</span>',
-                links.length ? '<span style="color:#718096;">🔗 ' + links.join(' • ') + '</span>' : '',
+                '<div class="detail-header">',
+                '    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">' + escapeHtml(project.description || 'No description') + '</p>',
+                '    <div class="detail-meta">',
+                '        <span class="status-pill ' + statusClass + '">' + statusDot + statusLabel + '</span>',
+                '        <span class="detail-meta-item">📁 ' + escapeHtml(project.team || 'No team') + '</span>',
+                '        <span class="detail-meta-item">👤 ' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                links.length ? '<span class="link-list">' + links.join('') + '</span>' : '',
                 '    </div>',
                 '</div>',
                 '',
                 '<div class="detail-section">',
-                '    <h3>🚧 Blockers</h3>',
-                blockersHtml,
-                '    <button class="btn-primary" style="margin-top:10px;" onclick="addBlocker()">+ Add Blocker</button>',
+                '    <div class="section-header">',
+                '        <span class="section-title">Blockers</span>',
+                '        <button class="btn btn-secondary" onclick="addBlocker()">+ Add</button>',
+                '    </div>',
+                '    <div class="item-list">' + blockersHtml + '</div>',
                 '</div>',
                 '',
                 '<div class="detail-section">',
-                '    <h3>📝 Updates & Next Steps</h3>',
-                updatesHtml,
-                '    <button class="btn-primary" style="margin-top:10px;" onclick="addUpdate()">+ Add Update</button>',
+                '    <div class="section-header">',
+                '        <span class="section-title">Updates</span>',
+                '        <button class="btn btn-secondary" onclick="addUpdate()">+ Add</button>',
+                '    </div>',
+                '    <div class="item-list">' + updatesHtml + '</div>',
                 '</div>'
             ].join('');
         }
