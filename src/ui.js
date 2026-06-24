@@ -1018,9 +1018,22 @@ export function getPage(projectId, user = null) {
             }
         }
         
+        /* Weekly Summary Grid */
+        .weekly-summary-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 40px;
+        }
+        
+        @media (max-width: 1200px) {
+            .weekly-summary-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         /* Shipped Section */
         .shipped-section {
-            margin-top: 40px;
             background: var(--surface);
             border: 1px solid var(--border);
             border-radius: 12px;
@@ -1119,6 +1132,34 @@ export function getPage(projectId, user = null) {
         .shipped-table .col-date {
             width: 15%;
             text-align: right;
+        }
+        
+        .shipped-table .col-update {
+            width: 40%;
+        }
+        
+        .shipped-table .col-project-name {
+            width: 25%;
+        }
+        
+        .shipped-table .col-status {
+            width: 20%;
+        }
+        
+        .shipped-table .col-status .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .shipped-table .col-status .status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
         }
         
         .shipped-project-name {
@@ -2078,31 +2119,63 @@ export function getPage(projectId, user = null) {
                 <div class="loading"><div class="spinner"></div> Loading projects...</div>
             </div>
             
-            <!-- Shipped This Week Section -->
-            <div class="shipped-section">
-                <div class="shipped-header">
-                    <div>
-                        <div class="shipped-title-row">
-                            <h3 class="shipped-title">Shipped This Week</h3>
-                            <span class="shipped-count" id="shipped-count">0</span>
+            <!-- Weekly Summary Section -->
+            <div class="weekly-summary-grid">
+                <!-- Shipped This Week -->
+                <div class="shipped-section">
+                    <div class="shipped-header">
+                        <div>
+                            <div class="shipped-title-row">
+                                <h3 class="shipped-title">Shipped This Week</h3>
+                                <span class="shipped-count" id="shipped-count">0</span>
+                            </div>
+                            <div class="shipped-week-range" id="shipped-week-range">Jun 22 - Jun 28</div>
                         </div>
-                        <div class="shipped-week-range" id="shipped-week-range">Jun 22 - Jun 28</div>
+                    </div>
+                    <div class="shipped-table-container">
+                        <table class="shipped-table" id="shippedTable">
+                            <thead>
+                                <tr>
+                                    <th class="col-project">Project</th>
+                                    <th class="col-team">Team</th>
+                                    <th class="col-date">Shipped</th>
+                                </tr>
+                            </thead>
+                            <tbody id="shippedTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                        <div class="shipped-empty" id="shippedEmpty">No projects shipped this week</div>
                     </div>
                 </div>
-                <div class="shipped-table-container">
-                    <table class="shipped-table" id="shippedTable">
-                        <thead>
-                            <tr>
-                                <th class="col-project">Project</th>
-                                <th class="col-team">Team</th>
-                                <th class="col-date">Shipped</th>
-                            </tr>
-                        </thead>
-                        <tbody id="shippedTableBody">
-                            <!-- Populated by JS -->
-                        </tbody>
-                    </table>
-                    <div class="shipped-empty" id="shippedEmpty">No projects shipped this week</div>
+                
+                <!-- Updates This Week -->
+                <div class="shipped-section">
+                    <div class="shipped-header">
+                        <div>
+                            <div class="shipped-title-row">
+                                <h3 class="shipped-title">Updates This Week</h3>
+                                <span class="shipped-count" id="updates-count">0</span>
+                            </div>
+                            <div class="shipped-week-range" id="updates-week-range">Jun 22 - Jun 28</div>
+                        </div>
+                    </div>
+                    <div class="shipped-table-container">
+                        <table class="shipped-table" id="updatesTable">
+                            <thead>
+                                <tr>
+                                    <th class="col-update">Update</th>
+                                    <th class="col-project-name">Project</th>
+                                    <th class="col-status">Status</th>
+                                    <th class="col-date">Date</th>
+                                </tr>
+                            </thead>
+                            <tbody id="updatesTableBody">
+                                <!-- Populated by JS -->
+                            </tbody>
+                        </table>
+                        <div class="shipped-empty" id="updatesEmpty">No updates this week</div>
+                    </div>
                 </div>
             </div>
         </main>
@@ -2320,11 +2393,14 @@ export function getPage(projectId, user = null) {
             // Render shipped table
             renderShippedTable(projects);
             
-            // Update week range
-            updateShippedWeekRange();
+            // Render updates table
+            renderUpdatesTable(projects);
+            
+            // Update week ranges
+            updateWeekRanges();
         }
         
-        function updateShippedWeekRange() {
+        function updateWeekRanges() {
             const now = new Date();
             const startOfWeek = new Date(now);
             startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
@@ -2334,8 +2410,11 @@ export function getPage(projectId, user = null) {
             const formatDate = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
             const rangeText = formatDate(startOfWeek) + ' - ' + formatDate(endOfWeek);
             
-            const el = document.getElementById('shipped-week-range');
-            if (el) el.textContent = rangeText;
+            const shippedEl = document.getElementById('shipped-week-range');
+            if (shippedEl) shippedEl.textContent = rangeText;
+            
+            const updatesEl = document.getElementById('updates-week-range');
+            if (updatesEl) updatesEl.textContent = rangeText;
         }
         
         function renderShippedTable(projects) {
@@ -2370,6 +2449,82 @@ export function getPage(projectId, user = null) {
                     '<tr onclick="openDetail(' + p.id + ')">',
                     '    <td><span class="shipped-project-name">' + escapeHtml(p.name) + '</span></td>',
                     '    <td><span class="shipped-team">' + escapeHtml(p.team || 'No team') + '</span></td>',
+                    '    <td class="shipped-date-cell">' + dateStr + '</td>',
+                    '</tr>'
+                ].join('');
+            }).join('');
+        }
+
+        function renderUpdatesTable(projects) {
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            
+            // Collect all updates from all projects from the last week
+            let allUpdates = [];
+            projects.forEach(p => {
+                if (p.updates && p.updates.length > 0) {
+                    p.updates.forEach(u => {
+                        const updateDate = u.created_at ? new Date(u.created_at) : null;
+                        if (updateDate && updateDate >= oneWeekAgo) {
+                            allUpdates.push({
+                                ...u,
+                                project_name: p.name,
+                                project_id: p.id,
+                                project_status: p.status
+                            });
+                        }
+                    });
+                }
+            });
+            
+            // Sort by date, newest first
+            allUpdates.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+            
+            // DEMO: Add mock updates if no real updates exist
+            if (allUpdates.length === 0) {
+                allUpdates = [
+                    { content: 'API integration completed and tested', project_name: 'AI Content Generator v2', project_id: 101, project_status: 'on_track', created_at: new Date().toISOString() },
+                    { content: 'Dashboard UI redesign finalized', project_name: 'Marketing Analytics Dashboard', project_id: 102, project_status: 'at_risk', created_at: new Date(Date.now() - 86400000).toISOString() },
+                    { content: 'Email templates created for 5 campaigns', project_name: 'Email Automation Flow', project_id: 103, project_status: 'on_track', created_at: new Date(Date.now() - 172800000).toISOString() },
+                    { content: 'Resolved rate limiting blocker', project_name: 'Marketing Analytics Dashboard', project_id: 102, project_status: 'at_risk', created_at: new Date(Date.now() - 259200000).toISOString() }
+                ];
+            }
+            
+            document.getElementById('updates-count').textContent = allUpdates.length;
+            
+            const tbody = document.getElementById('updatesTableBody');
+            const emptyState = document.getElementById('updatesEmpty');
+            const table = document.getElementById('updatesTable');
+            
+            if (allUpdates.length === 0) {
+                table.style.display = 'none';
+                emptyState.classList.add('visible');
+                return;
+            }
+            
+            table.style.display = 'table';
+            emptyState.classList.remove('visible');
+            
+            // Status colors
+            const statusColors = {
+                'on_track': { bg: '#dcfce7', text: '#166534' },
+                'at_risk': { bg: '#fef3c7', text: '#92400e' },
+                'blocked': { bg: '#fee2e2', text: '#991b1b' },
+                'completed': { bg: '#dbeafe', text: '#1e40af' }
+            };
+            
+            tbody.innerHTML = allUpdates.map(u => {
+                const dateStr = u.created_at 
+                    ? new Date(u.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    : '-';
+                const statusStyle = statusColors[u.project_status] || statusColors['on_track'];
+                const statusLabel = u.project_status ? u.project_status.replace('_', ' ') : 'Unknown';
+                
+                return [
+                    '<tr onclick="openDetail(' + u.project_id + ')">',
+                    '    <td><span class="shipped-project-name">' + escapeHtml(u.content || 'Update') + '</span></td>',
+                    '    <td><span class="shipped-team">' + escapeHtml(u.project_name) + '</span></td>',
+                    '    <td><span class="status-badge" style="background:' + statusStyle.bg + ';color:' + statusStyle.text + '"><span class="status-dot" style="background:' + statusStyle.text + '"></span>' + statusLabel + '</span></td>',
                     '    <td class="shipped-date-cell">' + dateStr + '</td>',
                     '</tr>'
                 ].join('');
