@@ -458,26 +458,26 @@ export const html = `<!DOCTYPE html>
                 ? '<span class="blocker-indicator">⚠️ ' + project.open_blockers + ' blocker' + (project.open_blockers > 1 ? 's' : '') + '</span>' 
                 : '';
             
-            return \`
-                <div class="card" onclick="openDetail(\${project.id})">
-                    <div class="card-title">\${escapeHtml(project.name)}</div>
-                    <div class="card-meta">
-                        <span class="status-badge \${statusClass}">\${statusLabel}</span>
-                        <span>\${escapeHtml(project.team || 'No team')}</span>
-                    </div>
-                    <div class="card-preview">\${escapeHtml(project.description || 'No description')}</div>
-                    <div class="card-footer">
-                        \${blockerBadge}
-                        <span class="owner-tag">\${escapeHtml(project.owner || 'Unassigned')}</span>
-                    </div>
-                </div>
-            \`;
+            return [
+                '<div class="card" onclick="openDetail(' + project.id + ')">',
+                '    <div class="card-title">' + escapeHtml(project.name) + '</div>',
+                '    <div class="card-meta">',
+                '        <span class="status-badge ' + statusClass + '">' + statusLabel + '</span>',
+                '        <span>' + escapeHtml(project.team || 'No team') + '</span>',
+                '    </div>',
+                '    <div class="card-preview">' + escapeHtml(project.description || 'No description') + '</div>',
+                '    <div class="card-footer">',
+                '        ' + blockerBadge,
+                '        <span class="owner-tag">' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                '    </div>',
+                '</div>'
+            ].join('');
         }
 
         async function openDetail(id) {
             currentProjectId = id;
             try {
-                const res = await fetch(\`/api/projects/\${id}\`);
+                const res = await fetch('/api/projects/' + id);
                 const project = await res.json();
                 renderDetail(project);
                 openModal('detailModal');
@@ -493,50 +493,50 @@ export const html = `<!DOCTYPE html>
             const statusLabel = project.status.replace('_', ' ');
             
             let updatesHtml = project.updates?.length 
-                ? project.updates.map(u => \`
-                    <div class="update-item">
-                        <div class="update-meta">\${escapeHtml(u.update_type)} • \${new Date(u.created_at).toLocaleDateString()} • \${escapeHtml(u.created_by || 'Unknown')}</div>
-                        <div>\${escapeHtml(u.content)}</div>
-                    </div>
-                \`).join('')
+                ? project.updates.map(u => [
+                    '<div class="update-item">',
+                    '    <div class="update-meta">' + escapeHtml(u.update_type) + ' • ' + new Date(u.created_at).toLocaleDateString() + ' • ' + escapeHtml(u.created_by || 'Unknown') + '</div>',
+                    '    <div>' + escapeHtml(u.content) + '</div>',
+                    '</div>'
+                ].join('')).join('')
                 : '<p style="color:#718096;font-style:italic;">No updates yet</p>';
             
             let blockersHtml = project.blockers?.length
-                ? project.blockers.map(b => \`
-                    <div class="blocker-item">
-                        <div class="blocker-meta">\${escapeHtml(b.severity)} priority • Open since \${new Date(b.created_at).toLocaleDateString()}</div>
-                        <div>\${escapeHtml(b.description)}</div>
-                    </div>
-                \`).join('')
+                ? project.blockers.map(b => [
+                    '<div class="blocker-item">',
+                    '    <div class="blocker-meta">' + escapeHtml(b.severity) + ' priority • Open since ' + new Date(b.created_at).toLocaleDateString() + '</div>',
+                    '    <div>' + escapeHtml(b.description) + '</div>',
+                    '</div>'
+                ].join('')).join('')
                 : '<p style="color:#718096;font-style:italic;">No open blockers 🎉</p>';
 
             const links = [];
-            if (project.gitlab_url) links.push(\`<a href="\${project.gitlab_url}" target="_blank" style="color:#667eea;">GitLab</a>\`);
-            if (project.github_url) links.push(\`<a href="\${project.github_url}" target="_blank" style="color:#667eea;">GitHub</a>\`);
+            if (project.gitlab_url) links.push('<a href="' + project.gitlab_url + '" target="_blank" style="color:#667eea;">GitLab</a>');
+            if (project.github_url) links.push('<a href="' + project.github_url + '" target="_blank" style="color:#667eea;">GitHub</a>');
             
-            document.getElementById('detailBody').innerHTML = \`
-                <div class="detail-section">
-                    <p style="margin-bottom:15px;color:#4a5568;">\${escapeHtml(project.description || 'No description')}</p>
-                    <div style="display:flex;gap:15px;margin-bottom:15px;flex-wrap:wrap;">
-                        <span class="status-badge \${statusClass}">\${statusLabel}</span>
-                        <span style="color:#718096;">📁 \${escapeHtml(project.team || 'No team')}</span>
-                        <span style="color:#718096;">👤 \${escapeHtml(project.owner || 'Unassigned')}</span>
-                        \${links.length ? '<span style="color:#718096;">🔗 ' + links.join(' • ') + '</span>' : ''}
-                    </div>
-                </div>
-                
-                <div class="detail-section">
-                    <h3>🚧 Blockers</h3>
-                    \${blockersHtml}
-                    <button class="btn-primary" style="margin-top:10px;" onclick="addBlocker()">+ Add Blocker</button>
-                </div>
-                
-                <div class="detail-section">
-                    <h3>📝 Updates & Next Steps</h3>
-                    \${updatesHtml}
-                    <button class="btn-primary" style="margin-top:10px;" onclick="addUpdate()">+ Add Update</button>
-                </div>
-            \`;
+            document.getElementById('detailBody').innerHTML = [
+                '<div class="detail-section">',
+                '    <p style="margin-bottom:15px;color:#4a5568;">' + escapeHtml(project.description || 'No description') + '</p>',
+                '    <div style="display:flex;gap:15px;margin-bottom:15px;flex-wrap:wrap;">',
+                '        <span class="status-badge ' + statusClass + '">' + statusLabel + '</span>',
+                '        <span style="color:#718096;">📁 ' + escapeHtml(project.team || 'No team') + '</span>',
+                '        <span style="color:#718096;">👤 ' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                links.length ? '<span style="color:#718096;">🔗 ' + links.join(' • ') + '</span>' : '',
+                '    </div>',
+                '</div>',
+                '',
+                '<div class="detail-section">',
+                '    <h3>🚧 Blockers</h3>',
+                blockersHtml,
+                '    <button class="btn-primary" style="margin-top:10px;" onclick="addBlocker()">+ Add Blocker</button>',
+                '</div>',
+                '',
+                '<div class="detail-section">',
+                '    <h3>📝 Updates & Next Steps</h3>',
+                updatesHtml,
+                '    <button class="btn-primary" style="margin-top:10px;" onclick="addUpdate()">+ Add Update</button>',
+                '</div>'
+            ].join('');
         }
 
         async function addUpdate() {
@@ -544,7 +544,7 @@ export const html = `<!DOCTYPE html>
             if (!content) return;
             
             try {
-                await fetch(\`/api/projects/\${currentProjectId}/updates\`, {
+                await fetch('/api/projects/' + currentProjectId + '/updates', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -564,7 +564,7 @@ export const html = `<!DOCTYPE html>
             if (!description) return;
             
             try {
-                await fetch(\`/api/projects/\${currentProjectId}/blockers\`, {
+                await fetch('/api/projects/' + currentProjectId + '/blockers', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
