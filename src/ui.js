@@ -1548,13 +1548,6 @@ export function getPage(projectId, user = null) {
                 <span class="stats-dot unknown">●</span>
                 <span class="stats-count" id="count-unknown">9</span>
                 
-                <div class="stats-filters">
-                    <button class="filter-pill">Filter ▼</button>
-                    <button class="filter-pill">All teams ▼</button>
-                    <button class="filter-pill">Group: Team ▼</button>
-                    <button class="filter-pill">Recent ▼</button>
-                </div>
-                
                 <div class="view-toggle">
                     <button class="view-btn active">⊞</button>
                     <button class="view-btn">☰</button>
