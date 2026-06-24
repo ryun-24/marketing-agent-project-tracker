@@ -950,42 +950,124 @@ export function getPage(projectId, user = null) {
             color: var(--text-primary);
         }
         
-        /* Team Board */
-        .team-board {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 24px;
-            align-items: start;
-        }
-        
-        .team-column {
-            background: transparent;
-        }
-        
-        .team-column-header {
+        /* Priority Tabs */
+        .priority-tabs {
             display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 16px;
-            padding-bottom: 8px;
-            border-bottom: 2px solid var(--border);
+            gap: 4px;
+            margin-bottom: 24px;
+            background: var(--surface);
+            padding: 4px;
+            border-radius: 8px;
+            width: fit-content;
+            border: 1px solid var(--border);
         }
         
-        .team-column-title {
+        .priority-tab {
+            padding: 8px 16px;
+            border: none;
+            background: transparent;
+            border-radius: 6px;
             font-size: 14px;
-            font-weight: 600;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .priority-tab:hover {
             color: var(--text-primary);
         }
         
-        .team-column-count {
+        .priority-tab.active {
+            background: var(--text-primary);
+            color: white;
+        }
+        
+        /* Projects List */
+        .projects-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .project-row {
+            display: grid;
+            grid-template-columns: auto 1fr auto auto auto;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .project-row:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .project-status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+        
+        .project-status-dot.on_track { background: var(--success); }
+        .project-status-dot.at_risk { background: var(--warning); }
+        .project-status-dot.blocked { background: var(--danger); }
+        
+        .project-info {
+            min-width: 0;
+        }
+        
+        .project-name {
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        
+        .project-meta {
             font-size: 12px;
             color: var(--text-muted);
         }
         
-        .team-card-list {
+        .project-team {
+            font-size: 13px;
+            color: var(--text-secondary);
+            padding: 4px 10px;
+            background: var(--bg);
+            border-radius: 4px;
+        }
+        
+        .project-blockers {
+            font-size: 12px;
+            color: var(--danger);
+        }
+        
+        .project-owner-sm {
             display: flex;
-            flex-direction: column;
-            gap: 12px;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .owner-avatar-sm {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
         }
         
         /* Project Cards */
@@ -1479,8 +1561,16 @@ export function getPage(projectId, user = null) {
                 </div>
             </div>
 
-            <!-- Board grouped by Team -->
-            <div class="team-board" id="teamBoard">
+            <!-- Priority Tabs -->
+            <div class="priority-tabs">
+                <button class="priority-tab active" onclick="showPriority('P0')" data-priority="P0">P0</button>
+                <button class="priority-tab" onclick="showPriority('P1')" data-priority="P1">P1</button>
+                <button class="priority-tab" onclick="showPriority('P2')" data-priority="P2">P2</button>
+                <button class="priority-tab" onclick="showPriority('P3')" data-priority="P3">P3</button>
+            </div>
+            
+            <!-- Projects List -->
+            <div class="projects-list" id="projectsList">
                 <!-- Populated by JS -->
                 <div class="loading"><div class="spinner"></div> Loading projects...</div>
             </div>
@@ -1603,6 +1693,7 @@ export function getPage(projectId, user = null) {
 
         let allProjects = [];
         let filteredProjects = [];
+        let currentPriority = 'P0';
 
         async function loadProjects() {
             try {
@@ -1610,13 +1701,30 @@ export function getPage(projectId, user = null) {
                 const projects = await res.json();
                 allProjects = projects;
                 filteredProjects = projects;
-                renderBoard(projects);
-                renderSidebarTeams(projects);
+                renderProjectsList();
                 updateStats(projects);
             } catch (err) {
                 console.error('Failed to load projects:', err);
-                document.getElementById('teamBoard').innerHTML = '<div class="loading">Error loading projects</div>';
+                document.getElementById('projectsList').innerHTML = '<div class="loading">Error loading projects</div>';
             }
+        }
+
+        function getPriority(project) {
+            if (project.stage === 'now') return 'P0';
+            if (project.stage === 'next') return 'P1';
+            if (project.stage === 'later') return 'P2';
+            return 'P3';
+        }
+
+        function showPriority(priority) {
+            currentPriority = priority;
+            
+            // Update active tab
+            document.querySelectorAll('.priority-tab').forEach(tab => {
+                tab.classList.toggle('active', tab.dataset.priority === priority);
+            });
+            
+            renderProjectsList();
         }
 
         function filterProjects() {
@@ -1626,7 +1734,7 @@ export function getPage(projectId, user = null) {
                 (p.description && p.description.toLowerCase().includes(searchTerm)) ||
                 (p.team && p.team.toLowerCase().includes(searchTerm))
             );
-            renderBoard(filteredProjects);
+            renderProjectsList();
         }
 
         function updateStats(projects) {
@@ -1637,78 +1745,37 @@ export function getPage(projectId, user = null) {
             document.getElementById('nav-global-count').textContent = projects.length;
         }
 
-        function renderSidebarTeams(projects) {
-            const teams = {};
-            projects.forEach(p => {
-                const team = p.team || 'No team';
-                teams[team] = (teams[team] || 0) + 1;
-            });
+        function renderProjectsList() {
+            const priorityProjects = filteredProjects.filter(p => getPriority(p) === currentPriority);
             
-            const colors = ['#f97316', '#3b82f6', '#22c55e', '#8b5cf6', '#ef4444', '#f59e0b'];
-            let html = '';
-            let colorIdx = 0;
-            
-            Object.entries(teams).sort().forEach(([team, count]) => {
-                const color = colors[colorIdx % colors.length];
-                const letter = team.charAt(0).toUpperCase();
-                html += [
-                    '<div class="team-item">',
-                    '    <div class="team-letter" style="background:' + color + '">' + letter + '</div>',
-                    '    <span class="team-name">' + escapeHtml(team) + '</span>',
-                    '    <span class="team-count">' + count + '</span>',
-                    '</div>'
-                ].join('');
-                colorIdx++;
-            });
-            
-            document.getElementById('teamList').innerHTML = html;
-        }
-
-        function renderBoard(projects) {
-            // Map stage/status to priority levels
-            function getPriority(project) {
-                // Map stage to priority: now=P0, next=P1, later=P2, default=P3
-                if (project.stage === 'now') return 'P0 - Now';
-                if (project.stage === 'next') return 'P1 - Next';
-                if (project.stage === 'later') return 'P2 - Later';
-                return 'P3 - Backlog';
+            if (priorityProjects.length === 0) {
+                document.getElementById('projectsList').innerHTML = '<div class="empty-state">No projects in ' + currentPriority + '</div>';
+                return;
             }
             
-            // Group by priority
-            const priorities = {
-                'P0 - Now': [],
-                'P1 - Next': [],
-                'P2 - Later': [],
-                'P3 - Backlog': []
-            };
+            const html = priorityProjects.map(p => renderProjectRow(p)).join('');
+            document.getElementById('projectsList').innerHTML = html;
+        }
+
+        function renderProjectRow(project) {
+            const initials = project.owner ? project.owner.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
+            const blockerText = project.open_blockers > 0 ? '⚠️ ' + project.open_blockers + ' blocker' + (project.open_blockers > 1 ? 's' : '') : '';
             
-            projects.forEach(p => {
-                const priority = getPriority(p);
-                priorities[priority].push(p);
-            });
-            
-            // Priority order
-            const priorityOrder = ['P0 - Now', 'P1 - Next', 'P2 - Later', 'P3 - Backlog'];
-            
-            let html = '';
-            priorityOrder.forEach(priority => {
-                const priorityProjects = priorities[priority];
-                if (priorityProjects.length === 0) return; // Skip empty columns
-                
-                html += [
-                    '<div class="team-column">',
-                    '    <div class="team-column-header">',
-                    '        <span class="team-column-title">' + priority + '</span>',
-                    '        <span class="team-column-count">' + priorityProjects.length + '</span>',
-                    '    </div>',
-                    '    <div class="team-card-list">',
-                    priorityProjects.map(p => renderProjectCard(p)).join(''),
-                    '    </div>',
-                    '</div>'
-                ].join('');
-            });
-            
-            document.getElementById('teamBoard').innerHTML = html || '<div class="empty-state">No projects found</div>';
+            return [
+                '<div class="project-row" onclick="openDetail(' + project.id + ')">',
+                '    <div class="project-status-dot ' + project.status + '"></div>',
+                '    <div class="project-info">',
+                '        <div class="project-name">' + escapeHtml(project.name) + '</div>',
+                '        <div class="project-meta">' + escapeHtml(project.description || 'No description') + '</div>',
+                '    </div>',
+                '    <div class="project-team">' + escapeHtml(project.team || 'No team') + '</div>',
+                '    <div class="project-blockers">' + blockerText + '</div>',
+                '    <div class="project-owner-sm">',
+                '        <div class="owner-avatar-sm">' + initials + '</div>',
+                '        <span>' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                '    </div>',
+                '</div>'
+            ].join('');
         }
 
         function renderProjectCard(project) {
