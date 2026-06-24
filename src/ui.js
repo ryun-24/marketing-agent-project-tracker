@@ -1658,6 +1658,134 @@ export function getPage(projectId, user = null) {
             grid-column: 1 / -1;
         }
         
+        /* Update Log */
+        .update-log-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            margin-bottom: 24px;
+            overflow: hidden;
+        }
+        
+        .update-log-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .btn-sm {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .btn-sm:hover {
+            background: #0052a3;
+        }
+        
+        .update-log-list {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .update-log-item {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .update-log-item:last-child {
+            border-bottom: none;
+        }
+        
+        .update-log-meta {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+        
+        .update-log-type {
+            background: var(--bg);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .update-log-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .update-log-content {
+            font-size: 14px;
+            color: var(--text-primary);
+            margin-bottom: 6px;
+            line-height: 1.5;
+        }
+        
+        .update-log-author {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .update-log-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 13px;
+        }
+        
+        /* Blocker items in info card */
+        .blocker-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            padding: 8px 0;
+            border-bottom: 1px solid var(--border);
+            font-size: 13px;
+        }
+        
+        .blocker-item:last-child {
+            border-bottom: none;
+        }
+        
+        .blocker-severity {
+            font-size: 10px;
+            font-weight: 600;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+        
+        .blocker-severity.high {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .blocker-severity.medium {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .blocker-severity.low {
+            background: #dbeafe;
+            color: #1e40af;
+        }
+        
         /* Comments Section */
         .comments-card {
             background: var(--surface);
@@ -2444,8 +2572,30 @@ export function getPage(projectId, user = null) {
                 '            </div>',
                 '        </div>',
                 '        ',
+                '        <!-- Update Log -->',
+                '        <div class="update-log-card">',
+                '            <div class="update-log-header">',
+                '                <span>📝 Update Log</span>',
+                '                <button class="btn-sm" onclick="addUpdate()">+ Add Update</button>',
+                '            </div>',
+                '            <div class="update-log-list">',
+                project.updates && project.updates.length > 0 
+                    ? project.updates.map(u => [
+                        '<div class="update-log-item">',
+                        '    <div class="update-log-meta">',
+                        '        <span class="update-log-type">' + escapeHtml(u.update_type || 'Update') + '</span>',
+                        '        <span class="update-log-date">' + (u.created_at ? new Date(u.created_at).toLocaleDateString() : '-') + '</span>',
+                        '    </div>',
+                        '    <div class="update-log-content">' + escapeHtml(u.content || '') + '</div>',
+                        '    <div class="update-log-author">by ' + escapeHtml(u.created_by || 'Unknown') + '</div>',
+                        '</div>'
+                    ].join('')).join('')
+                    : '<div class="update-log-empty">No updates yet. Click "Add Update" to record project progress.</div>',
+                '            </div>',
+                '        </div>',
+                '        ',
                 '        <!-- Info Cards -->',
-                '        <div class="info-cards-grid">',
+                '        <div class="info-cards-grid two-col">',
                 '            <div class="info-card">',
                 '                <div class="info-card-header">',
                 '                    <div class="info-card-icon status">📋</div>',
@@ -2457,29 +2607,13 @@ export function getPage(projectId, user = null) {
                 '            </div>',
                 '            <div class="info-card">',
                 '                <div class="info-card-header">',
-                '                    <div class="info-card-icon accomplishments">💡</div>',
-                '                    Accomplishments',
-                '                </div>',
-                '                <div class="info-card-content">',
-                '                    <p>' + escapeHtml(accomplishments) + '</p>',
-                '                </div>',
-                '            </div>',
-                '            <div class="info-card">',
-                '                <div class="info-card-header">',
-                '                    <div class="info-card-icon next-steps">➡️</div>',
-                '                    Next steps',
-                '                </div>',
-                '                <div class="info-card-content">',
-                '                    <p>Implement a dashboard for PO tracking, explore integrations, and schedule a follow-up meeting to discuss further.</p>',
-                '                </div>',
-                '            </div>',
-                '            <div class="info-card">',
-                '                <div class="info-card-header">',
                 '                    <div class="info-card-icon blockers">⚠️</div>',
                 '                    Blockers',
                 '                </div>',
                 '                <div class="info-card-content">',
-                '                    <p>' + escapeHtml(blockersList) + '</p>',
+                project.blockers && project.blockers.length > 0
+                    ? project.blockers.map(b => '<div class="blocker-item"><span class="blocker-severity ' + (b.severity || 'medium') + '">' + (b.severity || 'medium') + '</span>' + escapeHtml(b.description) + '</div>').join('')
+                    : '<p>' + escapeHtml(blockersList) + '</p>',
                 '                </div>',
                 '            </div>',
                 '        </div>',
