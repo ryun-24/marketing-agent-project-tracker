@@ -1030,15 +1030,13 @@ export function getPage(projectId, user = null) {
         .shipped-header {
             padding: 16px 20px;
             border-bottom: 1px solid var(--border);
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
         }
         
         .shipped-title-row {
             display: flex;
             align-items: center;
             gap: 10px;
+            margin-bottom: 4px;
         }
         
         .shipped-title {
@@ -1056,7 +1054,7 @@ export function getPage(projectId, user = null) {
             font-weight: 500;
         }
         
-        .shipped-date {
+        .shipped-week-range {
             font-size: 12px;
             color: var(--text-muted);
         }
@@ -1932,11 +1930,13 @@ export function getPage(projectId, user = null) {
             <!-- Shipped This Week Section -->
             <div class="shipped-section">
                 <div class="shipped-header">
-                    <div class="shipped-title-row">
-                        <h3 class="shipped-title">Shipped This Week</h3>
-                        <span class="shipped-count" id="shipped-count">0</span>
+                    <div>
+                        <div class="shipped-title-row">
+                            <h3 class="shipped-title">Shipped This Week</h3>
+                            <span class="shipped-count" id="shipped-count">0</span>
+                        </div>
+                        <div class="shipped-week-range" id="shipped-week-range">Jun 22 - Jun 28</div>
                     </div>
-                    <div class="shipped-date">Last 7 days</div>
                 </div>
                 <div class="shipped-table-container">
                     <table class="shipped-table" id="shippedTable">
@@ -2148,6 +2148,23 @@ export function getPage(projectId, user = null) {
             
             // Render shipped table
             renderShippedTable(projects);
+            
+            // Update week range
+            updateShippedWeekRange();
+        }
+        
+        function updateShippedWeekRange() {
+            const now = new Date();
+            const startOfWeek = new Date(now);
+            startOfWeek.setDate(now.getDate() - now.getDay()); // Sunday
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6); // Saturday
+            
+            const formatDate = (d) => d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            const rangeText = formatDate(startOfWeek) + ' - ' + formatDate(endOfWeek);
+            
+            const el = document.getElementById('shipped-week-range');
+            if (el) el.textContent = rangeText;
         }
         
         function renderShippedTable(projects) {
