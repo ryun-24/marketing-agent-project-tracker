@@ -1488,6 +1488,24 @@ export function getPage(projectId, user = null) {
             text-decoration: underline;
         }
         
+        /* Prevent flash of wrong content */
+        .initial-loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #f8fafc;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .initial-loading.hidden {
+            display: none;
+        }
+        
         .detail-header {
             display: flex;
             align-items: flex-start;
@@ -1835,8 +1853,13 @@ export function getPage(projectId, user = null) {
             </div>
         </aside>
 
+        <!-- Loading overlay - hidden by JS after view is determined -->
+        <div class="initial-loading" id="initialLoading">
+            <div class="spinner"></div>
+        </div>
+
         <!-- Main Content -->
-        <main class="main-content">
+        <main class="main-content" id="mainContent" style="flex:1;">
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="top-bar-left">
@@ -2053,12 +2076,15 @@ export function getPage(projectId, user = null) {
         const urlProjectId = pathParts[1] === 'project' ? pathParts[2] : null;
 
         // Load on page load
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             if (urlProjectId) {
-                loadProjectDetail(urlProjectId);
+                await loadProjectDetail(urlProjectId);
             } else {
-                loadProjects();
+                await loadProjects();
             }
+            // Hide loading overlay after view is fully rendered
+            const loading = document.getElementById('initialLoading');
+            if (loading) loading.classList.add('hidden');
         });
 
         // Form submission
