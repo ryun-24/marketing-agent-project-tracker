@@ -537,6 +537,607 @@ export function getPage(projectId, user = null) {
             to { transform: rotate(360deg); }
         }
         
+        /* App Layout with Sidebar */
+        .app-layout {
+            display: flex;
+            min-height: 100vh;
+            background: var(--bg);
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            width: 260px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 16px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-header {
+            padding: 0 16px 16px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 12px;
+            font-weight: 700;
+        }
+        
+        .sidebar-new-btn {
+            margin: 0 16px 12px;
+            padding: 8px 12px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .sidebar-new-btn span {
+            font-size: 16px;
+        }
+        
+        .sidebar-search {
+            padding: 0 16px 12px;
+        }
+        
+        .sidebar-search input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            background: var(--bg);
+        }
+        
+        .sidebar-nav {
+            padding: 0 12px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+            margin-bottom: 2px;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg);
+            color: var(--text-primary);
+        }
+        
+        .nav-item.active {
+            background: var(--bg);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        
+        .nav-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+        
+        .nav-count {
+            margin-left: auto;
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
+        
+        .sidebar-section {
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .sidebar-label {
+            padding: 0 16px 8px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        
+        .team-list {
+            padding: 0 12px;
+        }
+        
+        .team-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 6px 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            border-radius: 6px;
+        }
+        
+        .team-item:hover {
+            background: var(--bg);
+            color: var(--text-primary);
+        }
+        
+        .team-letter {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .team-name {
+            flex: 1;
+        }
+        
+        .team-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .sidebar-footer {
+            margin-top: auto;
+            padding: 16px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
+        .user-info {
+            flex: 1;
+        }
+        
+        .user-name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .user-email {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 24px 32px;
+        }
+        
+        /* Top Bar */
+        .top-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .top-bar-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .top-bar-left h1 {
+            font-size: 24px;
+            font-weight: 600;
+        }
+        
+        .live-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 4px 10px;
+            background: #dcfce7;
+            color: #166534;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .search-box {
+            position: relative;
+            width: 400px;
+        }
+        
+        .search-box svg {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+        
+        .search-box input {
+            width: 100%;
+            padding: 10px 12px 10px 40px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            background: var(--surface);
+        }
+        
+        .search-shortcut {
+            position: absolute;
+            right: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 12px;
+            color: var(--text-muted);
+            background: var(--bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .top-bar-right {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .team-avatars {
+            display: flex;
+            align-items: center;
+        }
+        
+        .team-avatar {
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            border: 2px solid var(--surface);
+            margin-left: -8px;
+        }
+        
+        .team-avatar:first-child {
+            margin-left: 0;
+        }
+        
+        .icon-btn {
+            width: 36px;
+            height: 36px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .btn-primary {
+            padding: 10px 16px;
+            background: #3b82f6;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        
+        /* Stats Bar */
+        .stats-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .stats-item {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .stats-item strong {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+        
+        .stats-dot {
+            font-size: 10px;
+        }
+        
+        .stats-dot.on-track { color: var(--success); }
+        .stats-dot.at-risk { color: var(--warning); }
+        .stats-dot.blocked { color: var(--danger); }
+        .stats-dot.unknown { color: var(--text-muted); }
+        
+        .stats-count {
+            font-size: 13px;
+            color: var(--text-secondary);
+            margin-right: 8px;
+        }
+        
+        .stats-filters {
+            display: flex;
+            gap: 8px;
+            margin-left: auto;
+        }
+        
+        .filter-pill {
+            padding: 6px 12px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            background: var(--surface);
+            font-size: 13px;
+            color: var(--text-secondary);
+            cursor: pointer;
+        }
+        
+        .view-toggle {
+            display: flex;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+        
+        .view-btn {
+            padding: 6px 10px;
+            border: none;
+            background: var(--surface);
+            font-size: 14px;
+            cursor: pointer;
+            color: var(--text-secondary);
+        }
+        
+        .view-btn.active {
+            background: var(--bg);
+            color: var(--text-primary);
+        }
+        
+        /* Team Board */
+        .team-board {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 24px;
+            align-items: start;
+        }
+        
+        .team-column {
+            background: transparent;
+        }
+        
+        .team-column-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid var(--border);
+        }
+        
+        .team-column-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .team-column-count {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .team-card-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        /* Project Cards */
+        .project-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .project-card:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .project-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        
+        .status-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            margin-top: 6px;
+            flex-shrink: 0;
+        }
+        
+        .status-indicator.on_track { background: var(--success); }
+        .status-indicator.at_risk { background: var(--warning); }
+        .status-indicator.blocked { background: var(--danger); }
+        
+        .project-card-title {
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.4;
+            flex: 1;
+        }
+        
+        .project-card-menu {
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+        
+        .project-card-desc {
+            font-size: 13px;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            margin-bottom: 12px;
+        }
+        
+        .project-card-meta {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 12px;
+        }
+        
+        .project-progress {
+            margin-bottom: 12px;
+        }
+        
+        .progress-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background: var(--border);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--success);
+            border-radius: 2px;
+            transition: width 0.3s ease;
+        }
+        
+        .progress-fill.partial {
+            background: var(--warning);
+        }
+        
+        .project-card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 12px;
+            border-top: 1px solid var(--border);
+        }
+        
+        .project-owner {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .owner-avatar {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+        }
+        
+        .owner-name {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .blocker-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: #fee2e2;
+            color: #991b1b;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 500;
+        }
+        
+        .privacy-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 2px 8px;
+            background: var(--bg);
+            color: var(--text-muted);
+            border-radius: 4px;
+            font-size: 11px;
+        }
+        
+        .project-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
         /* Detail Page Layout */
         .app {
             display: flex;
@@ -778,51 +1379,138 @@ export function getPage(projectId, user = null) {
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="header-content">
-            <div class="header-left">
-                <h1>Project Tracker</h1>
-                <span class="header-subtitle">Marketing Agents</span>
+    <div class="app-layout">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">PT</div>
+                    <span>Project Tracker</span>
+                </div>
             </div>
-            ${userDisplay}
-            <button class="btn btn-primary" onclick="openCreateModal()">
-                <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
-                New Project
+            
+            <button class="sidebar-new-btn" onclick="openCreateModal()">
+                <span>+</span> New project
             </button>
-        </div>
-    </header>
+            
+            <div class="sidebar-search">
+                <input type="text" placeholder="Search..." id="sidebarSearch">
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/" class="nav-item active">
+                    <span class="nav-icon">🌐</span>
+                    Global board
+                    <span class="nav-count" id="nav-global-count">11</span>
+                </a>
+                <a href="/?view=my" class="nav-item">
+                    <span class="nav-icon">📋</span>
+                    My board
+                </a>
+                <a href="/?view=skills" class="nav-item">
+                    <span class="nav-icon">🎯</span>
+                    Skills
+                </a>
+            </nav>
+            
+            <div class="sidebar-section">
+                <div class="sidebar-label">TEAMS</div>
+                <div class="team-list" id="teamList">
+                    <!-- Teams populated by JS -->
+                </div>
+            </div>
+            
+            <div class="sidebar-section">
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">🤖</span>
+                    AI & Automation
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">📝</span>
+                    Import notes
+                </a>
+                <a href="#" class="nav-item">
+                    <span class="nav-icon">🔗</span>
+                    Connect AI client
+                </a>
+            </div>
+            
+            <div class="sidebar-footer">
+                <div class="user-profile">
+                    <div class="user-avatar">RY</div>
+                    <div class="user-info">
+                        <div class="user-name">Rachel Yun</div>
+                        <div class="user-email">ryun@cloudflare.com</div>
+                    </div>
+                </div>
+            </div>
+        </aside>
 
-    <main class="main">
-        <div class="board" id="board">
-            <div class="column" data-stage="now">
-                <div class="column-header">
-                    <span class="column-title">Now</span>
-                    <span class="count now" id="count-now">0</span>
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Top Bar -->
+            <div class="top-bar">
+                <div class="top-bar-left">
+                    <h1>Global board</h1>
+                    <span class="live-badge">● Live</span>
                 </div>
-                <div id="list-now" class="card-list">
-                    <div class="loading"><div class="spinner"></div> Loading projects...</div>
+                
+                <div class="top-bar-center">
+                    <div class="search-box">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <path d="m21 21-4.35-4.35"></path>
+                        </svg>
+                        <input type="text" id="searchInput" placeholder="Search projects..." onkeyup="filterProjects()">
+                        <span class="search-shortcut">⌘K</span>
+                    </div>
+                </div>
+                
+                <div class="top-bar-right">
+                    <div class="team-avatars">
+                        <div class="team-avatar" title="Active users">CJ</div>
+                        <div class="team-avatar" title="Active users">SM</div>
+                        <div class="team-avatar" title="Active users">...</div>
+                    </div>
+                    <span class="status-badge">Active ● 6</span>
+                    <button class="icon-btn">🔔</button>
+                    <button class="icon-btn">📝</button>
+                    <button class="btn-primary" onclick="openCreateModal()">+ New project</button>
                 </div>
             </div>
-            <div class="column" data-stage="next">
-                <div class="column-header">
-                    <span class="column-title">Next</span>
-                    <span class="count next" id="count-next">0</span>
+            
+            <!-- Stats Bar -->
+            <div class="stats-bar">
+                <span class="stats-item"><strong id="total-projects">12</strong> projects</span>
+                <span class="stats-dot on-track">●</span>
+                <span class="stats-count" id="count-ontrack">10</span>
+                <span class="stats-dot at-risk">●</span>
+                <span class="stats-count" id="count-atrisk">1</span>
+                <span class="stats-dot blocked">●</span>
+                <span class="stats-count" id="count-blocked">0</span>
+                <span class="stats-dot unknown">●</span>
+                <span class="stats-count" id="count-unknown">9</span>
+                
+                <div class="stats-filters">
+                    <button class="filter-pill">Filter ▼</button>
+                    <button class="filter-pill">All teams ▼</button>
+                    <button class="filter-pill">Group: Team ▼</button>
+                    <button class="filter-pill">Recent ▼</button>
                 </div>
-                <div id="list-next" class="card-list">
-                    <div class="loading"><div class="spinner"></div> Loading projects...</div>
+                
+                <div class="view-toggle">
+                    <button class="view-btn active">⊞</button>
+                    <button class="view-btn">☰</button>
                 </div>
             </div>
-            <div class="column" data-stage="later">
-                <div class="column-header">
-                    <span class="column-title">Later</span>
-                    <span class="count later" id="count-later">0</span>
-                </div>
-                <div id="list-later" class="card-list">
-                    <div class="loading"><div class="spinner"></div> Loading projects...</div>
-                </div>
+
+            <!-- Board grouped by Team -->
+            <div class="team-board" id="teamBoard">
+                <!-- Populated by JS -->
+                <div class="loading"><div class="spinner"></div> Loading projects...</div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
 
     <!-- Create Project Modal -->
     <div class="modal-overlay" id="createModal">
@@ -938,52 +1626,135 @@ export function getPage(projectId, user = null) {
             }
         });
 
+        let allProjects = [];
+        let filteredProjects = [];
+
         async function loadProjects() {
             try {
                 const res = await fetch('/api/projects');
                 const projects = await res.json();
-                currentProjects = projects;
+                allProjects = projects;
+                filteredProjects = projects;
                 renderBoard(projects);
+                renderSidebarTeams(projects);
+                updateStats(projects);
             } catch (err) {
                 console.error('Failed to load projects:', err);
-                document.getElementById('list-now').innerHTML = '<div class="loading">Error loading projects</div>';
+                document.getElementById('teamBoard').innerHTML = '<div class="loading">Error loading projects</div>';
             }
         }
 
-        function renderBoard(projects) {
-            const stages = ['now', 'next', 'later'];
-            
-            stages.forEach(stage => {
-                const stageProjects = projects.filter(p => p.stage === stage);
-                document.getElementById('count-' + stage).textContent = stageProjects.length;
-                document.getElementById('list-' + stage).innerHTML = stageProjects.map(p => renderCard(p)).join('');
-            });
+        function filterProjects() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            filteredProjects = allProjects.filter(p => 
+                p.name.toLowerCase().includes(searchTerm) || 
+                (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+                (p.team && p.team.toLowerCase().includes(searchTerm))
+            );
+            renderBoard(filteredProjects);
         }
 
-        function renderCard(project) {
-            const statusClass = 'status-' + project.status;
-            const statusLabel = project.status.replace('_', ' ');
-            const statusDot = '<span class="status-dot"></span>';
-            const blockerBadge = project.open_blockers > 0 
-                ? '<span class="blocker-badge">⚠️ ' + project.open_blockers + '</span>' 
-                : '';
+        function updateStats(projects) {
+            document.getElementById('total-projects').textContent = projects.length;
+            document.getElementById('count-ontrack').textContent = projects.filter(p => p.status === 'on_track').length;
+            document.getElementById('count-atrisk').textContent = projects.filter(p => p.status === 'at_risk').length;
+            document.getElementById('count-blocked').textContent = projects.filter(p => p.status === 'blocked').length;
+            document.getElementById('nav-global-count').textContent = projects.length;
+        }
+
+        function renderSidebarTeams(projects) {
+            const teams = {};
+            projects.forEach(p => {
+                const team = p.team || 'No team';
+                teams[team] = (teams[team] || 0) + 1;
+            });
+            
+            const colors = ['#f97316', '#3b82f6', '#22c55e', '#8b5cf6', '#ef4444', '#f59e0b'];
+            let html = '';
+            let colorIdx = 0;
+            
+            Object.entries(teams).sort().forEach(([team, count]) => {
+                const color = colors[colorIdx % colors.length];
+                const letter = team.charAt(0).toUpperCase();
+                html += [
+                    '<div class="team-item">',
+                    '    <div class="team-letter" style="background:' + color + '">' + letter + '</div>',
+                    '    <span class="team-name">' + escapeHtml(team) + '</span>',
+                    '    <span class="team-count">' + count + '</span>',
+                    '</div>'
+                ].join('');
+                colorIdx++;
+            });
+            
+            document.getElementById('teamList').innerHTML = html;
+        }
+
+        function renderBoard(projects) {
+            // Group by team
+            const teams = {};
+            projects.forEach(p => {
+                const team = p.team || 'No team';
+                if (!teams[team]) teams[team] = [];
+                teams[team].push(p);
+            });
+            
+            // Sort teams alphabetically
+            const sortedTeams = Object.keys(teams).sort();
+            
+            let html = '';
+            sortedTeams.forEach(team => {
+                const teamProjects = teams[team];
+                html += [
+                    '<div class="team-column">',
+                    '    <div class="team-column-header">',
+                    '        <span class="team-column-title">' + escapeHtml(team) + '</span>',
+                    '        <span class="team-column-count">' + teamProjects.length + '</span>',
+                    '    </div>',
+                    '    <div class="team-card-list">',
+                    teamProjects.map(p => renderProjectCard(p)).join(''),
+                    '    </div>',
+                    '</div>'
+                ].join('');
+            });
+            
+            document.getElementById('teamBoard').innerHTML = html || '<div class="empty-state">No projects found</div>';
+        }
+
+        function renderProjectCard(project) {
             const initials = project.owner ? project.owner.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
+            const ownerName = project.owner ? project.owner.split(' ')[0] : 'Unassigned';
+            const progress = project.status === 'completed' ? 100 : 
+                            project.status === 'on_track' ? 60 : 
+                            project.status === 'at_risk' ? 30 : 0;
+            const progressColor = progress === 100 ? 'var(--success)' : 
+                                 progress > 50 ? 'var(--warning)' : 'var(--success)';
             
             return [
-                '<div class="card" onclick="openDetail(' + project.id + ')">',
-                '    <div class="card-header">',
-                '        <div class="card-title">' + escapeHtml(project.name) + '</div>',
-                blockerBadge,
+                '<div class="project-card" onclick="openDetail(' + project.id + ')">',
+                '    <div class="project-card-header">',
+                '        <span class="status-indicator ' + project.status + '"></span>',
+                '        <div class="project-card-title">' + escapeHtml(project.name) + '</div>',
+                '        <span class="project-card-menu">⋯</span>',
                 '    </div>',
-                '    <div class="card-desc">' + escapeHtml(project.description || 'No description') + '</div>',
-                '    <div class="card-footer">',
-                '        <div class="card-meta">',
-                '            <span class="status-pill ' + statusClass + '">' + statusDot + statusLabel + '</span>',
-                '            <span>' + escapeHtml(project.team || 'No team') + '</span>',
+                '    <div class="project-card-desc">' + escapeHtml(project.description || 'No description yet.') + '</div>',
+                '    <div class="project-progress">',
+                '        <div class="progress-row">',
+                '            <span>Progress</span>',
+                '            <span>' + progress + '%</span>',
                 '        </div>',
-                '        <div class="owner">',
-                '            <div class="avatar">' + initials + '</div>',
+                '        <div class="progress-bar">',
+                '            <div class="progress-fill" style="width:' + progress + '%;background:' + progressColor + '"></div>',
                 '        </div>',
+                '    </div>',
+                '    <div class="project-card-footer">',
+                '        <div class="project-owner">',
+                '            <div class="owner-avatar">' + initials + '</div>',
+                '            <span class="owner-name">' + escapeHtml(ownerName) + '</span>',
+                '            <span style="color:var(--text-muted);">•</span>',
+                '            <span class="owner-name">' + escapeHtml(project.team || 'No team') + '</span>',
+                (project.open_blockers > 0 ? '<span class="blocker-tag">⚠️ ' + project.open_blockers + ' blocker' + (project.open_blockers > 1 ? 's' : '') + '</span>' : ''),
+                '        </div>',
+                '        <span class="project-date">6d ago</span>',
                 '    </div>',
                 '</div>'
             ].join('');
