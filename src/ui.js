@@ -2035,6 +2035,18 @@ export function getPage(projectId, user = null) {
     <script>
         let currentProjects = [];
         let currentProjectId = null;
+        
+        // DEMO: Mock projects for visualization - always available
+        const demoProjects = [
+            { id: 101, name: 'AI Content Generator v2', description: 'Automated content creation with GPT-4 integration', stage: 'now', status: 'on_track', owner: 'Sarah Chen', team: 'Content Team', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 102, name: 'Marketing Analytics Dashboard', description: 'Real-time campaign performance tracking', stage: 'now', status: 'at_risk', owner: 'Mike Johnson', team: 'Analytics', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'medium', description: 'API rate limiting issues', created_at: new Date().toISOString()}], updates: [], comments: [] },
+            { id: 103, name: 'Email Automation Flow', description: 'Drip campaign sequences and A/B testing', stage: 'now', status: 'on_track', owner: 'Emily Wang', team: 'Growth', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 104, name: 'SEO Optimization Tool', description: 'Keyword research and competitor analysis', stage: 'next', status: 'on_track', owner: 'David Park', team: 'SEO Team', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 105, name: 'Social Media Scheduler', description: 'Cross-platform posting with analytics', stage: 'next', status: 'blocked', owner: 'Lisa Kumar', team: 'Social', open_blockers: 2, updated_at: new Date().toISOString(), blockers: [{severity: 'high', description: 'Instagram API access denied', created_at: new Date().toISOString()}, {severity: 'medium', description: 'Rate limit exceeded', created_at: new Date().toISOString()}], updates: [], comments: [] },
+            { id: 106, name: 'Landing Page Builder', description: 'Drag-and-drop page creation tool', stage: 'later', status: 'on_track', owner: 'Tom Wilson', team: 'Product', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 107, name: 'CRM Integration', description: 'Salesforce and HubSpot connectors', stage: 'later', status: 'on_track', owner: 'Alex Rivera', team: 'Engineering', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 108, name: 'Video Transcription API', description: 'Automated video captioning service', stage: 'later', status: 'at_risk', owner: 'Nina Patel', team: 'AI Team', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'low', description: 'Accuracy below threshold', created_at: new Date().toISOString()}], updates: [], comments: [] }
+        ];
 
         // Check URL path for detail view
         const pathParts = window.location.pathname.split('/');
@@ -2080,18 +2092,6 @@ export function getPage(projectId, user = null) {
                 const res = await fetch('/api/projects');
                 if (!res.ok) throw new Error('API error: ' + res.status);
                 const apiProjects = await res.json();
-                
-                // DEMO: Add mock projects for visualization
-                const demoProjects = [
-                    { id: 101, name: 'AI Content Generator v2', description: 'Automated content creation with GPT-4 integration', stage: 'now', status: 'on_track', owner: 'Sarah Chen', team: 'Content Team', open_blockers: 0, updated_at: new Date().toISOString() },
-                    { id: 102, name: 'Marketing Analytics Dashboard', description: 'Real-time campaign performance tracking', stage: 'now', status: 'at_risk', owner: 'Mike Johnson', team: 'Analytics', open_blockers: 1, updated_at: new Date().toISOString() },
-                    { id: 103, name: 'Email Automation Flow', description: 'Drip campaign sequences and A/B testing', stage: 'now', status: 'on_track', owner: 'Emily Wang', team: 'Growth', open_blockers: 0, updated_at: new Date().toISOString() },
-                    { id: 104, name: 'SEO Optimization Tool', description: 'Keyword research and competitor analysis', stage: 'next', status: 'on_track', owner: 'David Park', team: 'SEO Team', open_blockers: 0, updated_at: new Date().toISOString() },
-                    { id: 105, name: 'Social Media Scheduler', description: 'Cross-platform posting with analytics', stage: 'next', status: 'blocked', owner: 'Lisa Kumar', team: 'Social', open_blockers: 2, updated_at: new Date().toISOString() },
-                    { id: 106, name: 'Landing Page Builder', description: 'Drag-and-drop page creation tool', stage: 'later', status: 'on_track', owner: 'Tom Wilson', team: 'Product', open_blockers: 0, updated_at: new Date().toISOString() },
-                    { id: 107, name: 'CRM Integration', description: 'Salesforce and HubSpot connectors', stage: 'later', status: 'on_track', owner: 'Alex Rivera', team: 'Engineering', open_blockers: 0, updated_at: new Date().toISOString() },
-                    { id: 108, name: 'Video Transcription API', description: 'Automated video captioning service', stage: 'later', status: 'at_risk', owner: 'Nina Patel', team: 'AI Team', open_blockers: 1, updated_at: new Date().toISOString() }
-                ];
                 
                 // Merge real projects with demo projects (avoid duplicates)
                 const realIds = new Set((apiProjects || []).map(p => p.id));
@@ -2195,16 +2195,11 @@ export function getPage(projectId, user = null) {
                 return updated >= oneWeekAgo;
             }).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
             
-            // DEMO: Add mock project for visualization
-            const demoProjects = shippedProjects.length > 0 ? shippedProjects : [{
-                id: 1,
-                name: 'AI Content Generator v2',
-                team: 'Content Team',
-                updated_at: new Date().toISOString()
-            }];
+            // DEMO: Use shipped projects or demo data if empty
+            const displayProjects = shippedProjects.length > 0 ? shippedProjects : demoProjects.slice(0, 2);
             
-            document.getElementById('shipped-count').textContent = demoProjects.length;
-            document.getElementById('overview-shipped').textContent = demoProjects.length;
+            document.getElementById('shipped-count').textContent = displayProjects.length;
+            document.getElementById('overview-shipped').textContent = displayProjects.length;
             
             const tbody = document.getElementById('shippedTableBody');
             const emptyState = document.getElementById('shippedEmpty');
@@ -2213,7 +2208,7 @@ export function getPage(projectId, user = null) {
             table.style.display = 'table';
             emptyState.classList.remove('visible');
             
-            tbody.innerHTML = demoProjects.map(p => {
+            tbody.innerHTML = displayProjects.map(p => {
                 const dateStr = p.updated_at 
                     ? new Date(p.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                     : '-';
@@ -2316,16 +2311,9 @@ export function getPage(projectId, user = null) {
             currentProjectId = id;
             
             // Check if it's a demo project (IDs 101-108)
-            const demoProject = allProjects.find(p => p.id == id);
-            if (demoProject && demoProject.id >= 101 && demoProject.id <= 108) {
-                // Add empty arrays for blockers/updates if not present
-                const projectWithDefaults = {
-                    ...demoProject,
-                    blockers: demoProject.blockers || [],
-                    updates: demoProject.updates || [],
-                    comments: demoProject.comments || []
-                };
-                renderDetailPage(projectWithDefaults);
+            const demoProject = demoProjects.find(p => p.id == id);
+            if (demoProject) {
+                renderDetailPage(demoProject);
                 return;
             }
             
