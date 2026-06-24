@@ -535,6 +535,245 @@ export function getPage(projectId) {
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+        
+        /* Detail Page Layout */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .sidebar {
+            width: 240px;
+            background: var(--surface);
+            border-right: 1px solid var(--border);
+            padding: 20px 0;
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+        }
+        
+        .sidebar-logo {
+            padding: 0 20px 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        
+        .logo-icon {
+            width: 28px;
+            height: 28px;
+            background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav {
+            padding: 0 12px;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 12px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            text-decoration: none;
+            border-radius: 6px;
+            transition: all 0.15s ease;
+        }
+        
+        .nav-item:hover {
+            background: var(--bg);
+            color: var(--text-primary);
+        }
+        
+        .detail-layout {
+            margin-left: 240px;
+            padding: 32px;
+            max-width: 800px;
+        }
+        
+        .detail-breadcrumb {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+        
+        .detail-breadcrumb a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .detail-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+        
+        .detail-breadcrumb span {
+            margin: 0 8px;
+        }
+        
+        .detail-title {
+            font-size: 28px;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+        
+        .detail-badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+        }
+        
+        .detail-description {
+            font-size: 15px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 32px;
+        }
+        
+        .info-item {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .info-label {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-muted);
+        }
+        
+        .info-value {
+            font-size: 14px;
+            color: var(--text-primary);
+        }
+        
+        .owner-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .info-link {
+            color: var(--accent);
+            text-decoration: none;
+            font-size: 14px;
+        }
+        
+        .info-link:hover {
+            text-decoration: underline;
+        }
+        
+        .section {
+            margin-bottom: 32px;
+        }
+        
+        .section h2 {
+            font-size: 18px;
+            font-weight: 600;
+        }
+        
+        .cards-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 16px;
+        }
+        
+        .update-card, .blocker-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 16px;
+        }
+        
+        .blocker-card {
+            border-left: 3px solid var(--danger);
+        }
+        
+        .update-header, .blocker-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        
+        .update-type {
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        
+        .update-date, .blocker-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .update-content, .blocker-content {
+            font-size: 14px;
+            color: var(--text-primary);
+            line-height: 1.5;
+            margin-bottom: 8px;
+        }
+        
+        .update-author {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .blocker-severity {
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+        
+        .blocker-severity.high {
+            background: var(--danger-bg);
+            color: #991b1b;
+        }
+        
+        .blocker-severity.medium {
+            background: var(--warning-bg);
+            color: #92400e;
+        }
+        
+        .blocker-severity.low {
+            background: #f3f4f6;
+            color: #374151;
+        }
     </style>
 </head>
 <body>
