@@ -2152,22 +2152,25 @@ export function getPage(projectId, user = null) {
                 return updated >= oneWeekAgo;
             }).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
             
-            document.getElementById('shipped-count').textContent = shippedProjects.length;
+            // DEMO: Add mock project for visualization
+            const demoProjects = shippedProjects.length > 0 ? shippedProjects : [{
+                id: 1,
+                name: 'AI Content Generator v2',
+                team: 'Content Team',
+                updated_at: new Date().toISOString()
+            }];
+            
+            document.getElementById('shipped-count').textContent = demoProjects.length;
+            document.getElementById('overview-shipped').textContent = demoProjects.length;
             
             const tbody = document.getElementById('shippedTableBody');
             const emptyState = document.getElementById('shippedEmpty');
             const table = document.getElementById('shippedTable');
             
-            if (shippedProjects.length === 0) {
-                table.style.display = 'none';
-                emptyState.classList.add('visible');
-                return;
-            }
-            
             table.style.display = 'table';
             emptyState.classList.remove('visible');
             
-            tbody.innerHTML = shippedProjects.map(p => {
+            tbody.innerHTML = demoProjects.map(p => {
                 const dateStr = p.updated_at 
                     ? new Date(p.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
                     : '-';
