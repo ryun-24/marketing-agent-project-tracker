@@ -693,12 +693,6 @@ export function getPage(projectId, user = null) {
             color: var(--text-primary);
         }
         
-        .team-item.active {
-            background: var(--bg);
-            color: var(--text-primary);
-            font-weight: 500;
-        }
-        
         .team-letter {
             width: 20px;
             height: 20px;
@@ -1495,10 +1489,6 @@ export function getPage(projectId, user = null) {
                     <span class="nav-icon">📋</span>
                     My board
                 </a>
-                <a href="/?view=skills" class="nav-item">
-                    <span class="nav-icon">🎯</span>
-                    Skills
-                </a>
             </nav>
             
             <div class="sidebar-section">
@@ -1695,61 +1685,17 @@ export function getPage(projectId, user = null) {
         async function loadProjects() {
             try {
                 const res = await fetch('/api/projects');
+                if (!res.ok) throw new Error('API error: ' + res.status);
                 const projects = await res.json();
-                allProjects = projects;
-                filteredProjects = projects;
+                allProjects = projects || [];
+                filteredProjects = projects || [];
+                console.log('Loaded projects:', allProjects.length);
                 renderProjectsList();
-                renderSidebarTeams(projects);
-                updateStats(projects);
+                updateStats(allProjects);
             } catch (err) {
                 console.error('Failed to load projects:', err);
-                document.getElementById('projectsList').innerHTML = '<div class="loading">Error loading projects</div>';
+                document.getElementById('projectsList').innerHTML = '<div class="empty-state">Error loading projects. Please refresh.</div>';
             }
-        }
-
-        function renderSidebarTeams(projects) {
-            const teams = {};
-            projects.forEach(p => {
-                const team = p.team || 'No team';
-                teams[team] = (teams[team] || 0) + 1;
-            });
-            
-            const colors = ['#f97316', '#3b82f6', '#22c55e', '#8b5cf6', '#ef4444', '#f59e0b'];
-            let html = '';
-            let colorIdx = 0;
-            
-            Object.entries(teams).sort().forEach(([team, count]) => {
-                const color = colors[colorIdx % colors.length];
-                const letter = team.charAt(0).toUpperCase();
-                html += [
-                    '<div class="team-item" onclick="filterByTeam(\'' + escapeHtml(team).replace(/'/g, "\\'") + '\')">',
-                    '    <div class="team-letter" style="background:' + color + '">' + letter + '</div>',
-                    '    <span class="team-name">' + escapeHtml(team) + '</span>',
-                    '    <span class="team-count">' + count + '</span>',
-                    '</div>'
-                ].join('');
-                colorIdx++;
-            });
-            
-            document.getElementById('teamList').innerHTML = html || '<div class="team-item"><span class="team-name">No teams yet</span></div>';
-        }
-
-        let currentTeamFilter = null;
-
-        function filterByTeam(team) {
-            if (currentTeamFilter === team) {
-                // Clear filter if clicking same team
-                currentTeamFilter = null;
-                filteredProjects = allProjects;
-                document.querySelectorAll('.team-item').forEach(el => el.classList.remove('active'));
-            } else {
-                // Apply filter
-                currentTeamFilter = team;
-                filteredProjects = allProjects.filter(p => (p.team || 'No team') === team);
-                document.querySelectorAll('.team-item').forEach(el => el.classList.remove('active'));
-                event.currentTarget.classList.add('active');
-            }
-            renderProjectsList();
         }
 
         function getPriority(project) {
@@ -1772,23 +1718,11 @@ export function getPage(projectId, user = null) {
 
         function filterProjects() {
             const searchTerm = document.getElementById('searchInput').value.toLowerCase();
-            let results = allProjects;
-            
-            // Apply team filter if active
-            if (currentTeamFilter) {
-                results = results.filter(p => (p.team || 'No team') === currentTeamFilter);
-            }
-            
-            // Apply search filter
-            if (searchTerm) {
-                results = results.filter(p => 
-                    p.name.toLowerCase().includes(searchTerm) || 
-                    (p.description && p.description.toLowerCase().includes(searchTerm)) ||
-                    (p.team && p.team.toLowerCase().includes(searchTerm))
-                );
-            }
-            
-            filteredProjects = results;
+            filteredProjects = allProjects.filter(p => 
+                p.name.toLowerCase().includes(searchTerm) || 
+                (p.description && p.description.toLowerCase().includes(searchTerm)) ||
+                (p.team && p.team.toLowerCase().includes(searchTerm))
+            );
             renderProjectsList();
         }
 
@@ -1801,15 +1735,23 @@ export function getPage(projectId, user = null) {
         }
 
         function renderProjectsList() {
+            const container = document.getElementById('projectsList');
+            if (!container) return;
+            
+            if (!filteredProjects || filteredProjects.length === 0) {
+                container.innerHTML = '<div class="empty-state">No projects found</div>';
+                return;
+            }
+            
             const priorityProjects = filteredProjects.filter(p => getPriority(p) === currentPriority);
             
             if (priorityProjects.length === 0) {
-                document.getElementById('projectsList').innerHTML = '<div class="empty-state">No projects in ' + currentPriority + '</div>';
+                container.innerHTML = '<div class="empty-state">No projects in ' + currentPriority + '</div>';
                 return;
             }
             
             const html = priorityProjects.map(p => renderProjectRow(p)).join('');
-            document.getElementById('projectsList').innerHTML = html;
+            container.innerHTML = html;
         }
 
         function renderProjectRow(project) {
