@@ -1272,6 +1272,9 @@ export function getPage(projectId, user = null) {
             flex: 1;
             padding: 32px 40px;
             max-width: 900px;
+            margin-right: auto;
+            margin-left: auto;
+            padding-left: 104px;
         }
         
         .detail-breadcrumb {
