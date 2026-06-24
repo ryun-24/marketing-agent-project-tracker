@@ -2262,9 +2262,17 @@ export function getPage(projectId, user = null) {
         
         // DEMO: Mock projects for visualization - always available
         const demoProjects = [
-            { id: 101, name: 'AI Content Generator v2', description: 'Automated content creation with GPT-4 integration', stage: 'now', status: 'on_track', owner: 'Sarah Chen', team: 'Content Team', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
-            { id: 102, name: 'Marketing Analytics Dashboard', description: 'Real-time campaign performance tracking', stage: 'now', status: 'at_risk', owner: 'Mike Johnson', team: 'Analytics', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'medium', description: 'API rate limiting issues', created_at: new Date().toISOString()}], updates: [], comments: [] },
-            { id: 103, name: 'Email Automation Flow', description: 'Drip campaign sequences and A/B testing', stage: 'now', status: 'on_track', owner: 'Emily Wang', team: 'Growth', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 101, name: 'AI Content Generator v2', description: 'Automated content creation with GPT-4 integration', stage: 'now', status: 'on_track', owner: 'Sarah Chen', team: 'Content Team', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [
+                { update_type: 'Progress', content: 'API integration completed and tested', created_by: 'Sarah Chen', created_at: new Date().toISOString() },
+                { update_type: 'Feature', content: 'GPT-4 prompt templates finalized', created_by: 'Dev Team', created_at: new Date(Date.now() - 172800000).toISOString() }
+            ], comments: [] },
+            { id: 102, name: 'Marketing Analytics Dashboard', description: 'Real-time campaign performance tracking', stage: 'now', status: 'at_risk', owner: 'Mike Johnson', team: 'Analytics', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'medium', description: 'API rate limiting issues', created_at: new Date().toISOString()}], updates: [
+                { update_type: 'Design', content: 'Dashboard UI redesign finalized', created_by: 'Design Team', created_at: new Date(Date.now() - 86400000).toISOString() },
+                { update_type: 'Fix', content: 'Resolved rate limiting blocker', created_by: 'Mike Johnson', created_at: new Date(Date.now() - 259200000).toISOString() }
+            ], comments: [] },
+            { id: 103, name: 'Email Automation Flow', description: 'Drip campaign sequences and A/B testing', stage: 'now', status: 'on_track', owner: 'Emily Wang', team: 'Growth', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [
+                { update_type: 'Content', content: 'Email templates created for 5 campaigns', created_by: 'Emily Wang', created_at: new Date(Date.now() - 172800000).toISOString() }
+            ], comments: [] },
             { id: 104, name: 'SEO Optimization Tool', description: 'Keyword research and competitor analysis', stage: 'next', status: 'on_track', owner: 'David Park', team: 'SEO Team', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
             { id: 105, name: 'Social Media Scheduler', description: 'Cross-platform posting with analytics', stage: 'next', status: 'blocked', owner: 'Lisa Kumar', team: 'Social', open_blockers: 2, updated_at: new Date().toISOString(), blockers: [{severity: 'high', description: 'Instagram API access denied', created_at: new Date().toISOString()}, {severity: 'medium', description: 'Rate limit exceeded', created_at: new Date().toISOString()}], updates: [], comments: [] },
             { id: 106, name: 'Landing Page Builder', description: 'Drag-and-drop page creation tool', stage: 'later', status: 'on_track', owner: 'Tom Wilson', team: 'Product', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
