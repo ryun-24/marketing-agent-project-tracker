@@ -2572,28 +2572,6 @@ export function getPage(projectId, user = null) {
                 '            </div>',
                 '        </div>',
                 '        ',
-                '        <!-- Update Log -->',
-                '        <div class="update-log-card">',
-                '            <div class="update-log-header">',
-                '                <span>📝 Update Log</span>',
-                '                <button class="btn-sm" onclick="addUpdate()">+ Add Update</button>',
-                '            </div>',
-                '            <div class="update-log-list">',
-                project.updates && project.updates.length > 0 
-                    ? project.updates.map(u => [
-                        '<div class="update-log-item">',
-                        '    <div class="update-log-meta">',
-                        '        <span class="update-log-type">' + escapeHtml(u.update_type || 'Update') + '</span>',
-                        '        <span class="update-log-date">' + (u.created_at ? new Date(u.created_at).toLocaleDateString() : '-') + '</span>',
-                        '    </div>',
-                        '    <div class="update-log-content">' + escapeHtml(u.content || '') + '</div>',
-                        '    <div class="update-log-author">by ' + escapeHtml(u.created_by || 'Unknown') + '</div>',
-                        '</div>'
-                    ].join('')).join('')
-                    : '<div class="update-log-empty">No updates yet. Click "Add Update" to record project progress.</div>',
-                '            </div>',
-                '        </div>',
-                '        ',
                 '        <!-- Info Cards -->',
                 '        <div class="info-cards-grid two-col">',
                 '            <div class="info-card">',
@@ -2615,6 +2593,28 @@ export function getPage(projectId, user = null) {
                     ? project.blockers.map(b => '<div class="blocker-item"><span class="blocker-severity ' + (b.severity || 'medium') + '">' + (b.severity || 'medium') + '</span>' + escapeHtml(b.description) + '</div>').join('')
                     : '<p>' + escapeHtml(blockersList) + '</p>',
                 '                </div>',
+                '            </div>',
+                '        </div>',
+                '        ',
+                '        <!-- Update Log -->',
+                '        <div class="update-log-card">',
+                '            <div class="update-log-header">',
+                '                <span>📝 Update Log</span>',
+                '                <button class="btn-sm" onclick="addUpdate()">+ Add Update</button>',
+                '            </div>',
+                '            <div class="update-log-list">',
+                project.updates && project.updates.length > 0 
+                    ? project.updates.map(u => [
+                        '<div class="update-log-item">',
+                        '    <div class="update-log-meta">',
+                        '        <span class="update-log-type">' + escapeHtml(u.update_type || 'Update') + '</span>',
+                        '        <span class="update-log-date">' + (u.created_at ? new Date(u.created_at).toLocaleDateString() : '-') + '</span>',
+                        '    </div>',
+                        '    <div class="update-log-content">' + escapeHtml(u.content || '') + '</div>',
+                        '    <div class="update-log-author">by ' + escapeHtml(u.created_by || 'Unknown') + '</div>',
+                        '</div>'
+                    ].join('')).join('')
+                    : '<div class="update-log-empty">No updates yet. Click "Add Update" to record project progress.</div>',
                 '            </div>',
                 '        </div>',
                 '        ',
