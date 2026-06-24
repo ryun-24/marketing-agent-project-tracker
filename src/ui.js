@@ -2314,6 +2314,21 @@ export function getPage(projectId, user = null) {
         
         async function loadProjectDetail(id) {
             currentProjectId = id;
+            
+            // Check if it's a demo project (IDs 101-108)
+            const demoProject = allProjects.find(p => p.id == id);
+            if (demoProject && demoProject.id >= 101 && demoProject.id <= 108) {
+                // Add empty arrays for blockers/updates if not present
+                const projectWithDefaults = {
+                    ...demoProject,
+                    blockers: demoProject.blockers || [],
+                    updates: demoProject.updates || [],
+                    comments: demoProject.comments || []
+                };
+                renderDetailPage(projectWithDefaults);
+                return;
+            }
+            
             try {
                 const res = await fetch('/api/projects/' + id);
                 const project = await res.json();
