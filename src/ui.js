@@ -1,6 +1,9 @@
 // UI Template for Project Tracker - Clean Professional Design
 
-export const html = `<!DOCTYPE html>
+export function getPage(projectId) {
+    const isDetail = !!projectId;
+    
+    return `<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -659,8 +662,18 @@ export const html = `<!DOCTYPE html>
         let currentProjects = [];
         let currentProjectId = null;
 
-        // Load projects on page load
-        document.addEventListener('DOMContentLoaded', loadProjects);
+        // Check URL path for detail view
+        const pathParts = window.location.pathname.split('/');
+        const urlProjectId = pathParts[1] === 'project' ? pathParts[2] : null;
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            if (urlProjectId) {
+                loadProjectDetail(urlProjectId);
+            } else {
+                loadProjects();
+            }
+        });
 
         // Form submission
         document.getElementById('createForm').addEventListener('submit', async (e) => {
@@ -735,80 +748,122 @@ export const html = `<!DOCTYPE html>
             ].join('');
         }
 
-        async function openDetail(id) {
+        function openDetail(id) {
+            window.location.href = '/project/' + id;
+        }
+        
+        async function loadProjectDetail(id) {
             currentProjectId = id;
             try {
                 const res = await fetch('/api/projects/' + id);
                 const project = await res.json();
-                renderDetail(project);
-                openModal('detailModal');
+                renderDetailPage(project);
             } catch (err) {
-                alert('Error loading project details');
+                document.body.innerHTML = '<div style="padding:40px;text-align:center;">Error loading project</div>';
             }
         }
 
-        function renderDetail(project) {
-            document.getElementById('detailTitle').textContent = project.name;
-            
+        function renderDetailPage(project) {
+            const initials = project.owner ? project.owner.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
             const statusClass = 'status-' + project.status;
             const statusLabel = project.status.replace('_', ' ');
-            const statusDot = '<span class="status-dot"></span>';
             
             let updatesHtml = project.updates?.length 
                 ? project.updates.map(u => [
-                    '<div class="item">',
-                    '    <div class="item-header">',
-                    '        <span class="item-meta">' + escapeHtml(u.update_type) + ' • ' + new Date(u.created_at).toLocaleDateString() + '</span>',
-                    '        <span class="item-meta">' + escapeHtml(u.created_by || 'Unknown') + '</span>',
+                    '<div class="update-card">',
+                    '    <div class="update-header">',
+                    '        <span class="update-type">' + escapeHtml(u.update_type) + '</span>',
+                    '        <span class="update-date">' + new Date(u.created_at).toLocaleDateString() + '</span>',
                     '    </div>',
-                    '    <div class="item-content">' + escapeHtml(u.content) + '</div>',
+                    '    <div class="update-content">' + escapeHtml(u.content) + '</div>',
+                    '    <div class="update-author">by ' + escapeHtml(u.created_by || 'Unknown') + '</div>',
                     '</div>'
                 ].join('')).join('')
                 : '<p class="empty-state">No updates yet</p>';
             
             let blockersHtml = project.blockers?.length
                 ? project.blockers.map(b => [
-                    '<div class="item blocker-item">',
-                    '    <div class="item-header">',
-                    '        <span class="severity">' + escapeHtml(b.severity) + '</span>',
-                    '        <span class="item-meta">Open since ' + new Date(b.created_at).toLocaleDateString() + '</span>',
+                    '<div class="blocker-card">',
+                    '    <div class="blocker-header">',
+                    '        <span class="blocker-severity ' + escapeHtml(b.severity) + '">' + escapeHtml(b.severity) + '</span>',
+                    '        <span class="blocker-date">Open since ' + new Date(b.created_at).toLocaleDateString() + '</span>',
                     '    </div>',
-                    '    <div class="item-content">' + escapeHtml(b.description) + '</div>',
+                    '    <div class="blocker-content">' + escapeHtml(b.description) + '</div>',
                     '</div>'
                 ].join('')).join('')
-                : '<p class="empty-state">No open blockers</p>';
-
-            const links = [];
-            if (project.gitlab_url) links.push('<a href="' + project.gitlab_url + '" target="_blank" class="link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>GitLab</a>');
-            if (project.github_url) links.push('<a href="' + project.github_url + '" target="_blank" class="link"><svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z"/></svg>GitHub</a>');
+                : '<p class="empty-state">No open blockers 🎉</p>';
             
-            document.getElementById('detailBody').innerHTML = [
-                '<div class="detail-header">',
-                '    <p style="font-size:14px;color:var(--text-secondary);margin-bottom:16px;line-height:1.6;">' + escapeHtml(project.description || 'No description') + '</p>',
-                '    <div class="detail-meta">',
-                '        <span class="status-pill ' + statusClass + '">' + statusDot + statusLabel + '</span>',
-                '        <span class="detail-meta-item">📁 ' + escapeHtml(project.team || 'No team') + '</span>',
-                '        <span class="detail-meta-item">👤 ' + escapeHtml(project.owner || 'Unassigned') + '</span>',
-                links.length ? '<span class="link-list">' + links.join('') + '</span>' : '',
-                '    </div>',
-                '</div>',
-                '',
-                '<div class="detail-section">',
-                '    <div class="section-header">',
-                '        <span class="section-title">Blockers</span>',
-                '        <button class="btn btn-secondary" onclick="addBlocker()">+ Add</button>',
-                '    </div>',
-                '    <div class="item-list">' + blockersHtml + '</div>',
-                '</div>',
-                '',
-                '<div class="detail-section">',
-                '    <div class="section-header">',
-                '        <span class="section-title">Updates</span>',
-                '        <button class="btn btn-secondary" onclick="addUpdate()">+ Add</button>',
-                '    </div>',
-                '    <div class="item-list">' + updatesHtml + '</div>',
+            document.body.innerHTML = [
+                '<div class="app">',
+                '    <aside class="sidebar">',
+                '        <div class="sidebar-logo">',
+                '            <div class="logo">',
+                '                <div class="logo-icon">',
+                '                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+                '                </div>',
+                '                <span>Projects</span>',
+                '            </div>',
+                '        </div>',
+                '        <nav class="nav">',
+                '            <a href="/" class="nav-item">← Back to Board</a>',
+                '        </nav>',
+                '    </aside>',
+                '    <main class="main">',
+                '        <div class="detail-layout">',
+                '            <div class="detail-main">',
+                '                <div class="detail-breadcrumb">',
+                '                    <a href="/">Projects</a>',
+                '                    <span>/</span>',
+                '                    <span>' + escapeHtml(project.name) + '</span>',
+                '                </div>',
+                '                <h1 class="detail-title">' + escapeHtml(project.name) + '</h1>',
+                '                <div class="detail-badges">',
+                '                    <span class="badge ' + statusClass + '">' + statusLabel + '</span>',
+                '                    <span class="badge">' + escapeHtml(project.stage) + '</span>',
+                '                </div>',
+                '                <p class="detail-description">' + escapeHtml(project.description || 'No description') + '</p>',
+                '                <div class="info-grid">',
+                '                    <div class="info-item">',
+                '                        <span class="info-label">Owner</span>',
+                '                        <div class="info-value owner-info">',
+                '                            <div class="avatar">' + initials + '</div>',
+                '                            <span>' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                '                        </div>',
+                '                    </div>',
+                '                    <div class="info-item">',
+                '                        <span class="info-label">Team</span>',
+                '                        <span class="info-value">' + escapeHtml(project.team || 'No team') + '</span>',
+                '                    </div>',
+                (project.gitlab_url ? [
+                '                    <div class="info-item">',
+                '                        <span class="info-label">GitLab</span>',
+                '                        <a href="' + project.gitlab_url + '" target="_blank" class="info-link">View repository →</a>',
+                '                    </div>'] : []),
+                (project.github_url ? [
+                '                    <div class="info-item">',
+                '                        <span class="info-label">GitHub</span>',
+                '                        <a href="' + project.github_url + '" target="_blank" class="info-link">View repository →</a>',
+                '                    </div>'] : []),
+                '                </div>',
+                '                <div class="section">',
+                '                    <div class="section-header">',
+                '                        <h2>Blockers (' + (project.blockers?.length || 0) + ')</h2>',
+                '                        <button class="btn" onclick="addBlocker()">+ Add blocker</button>',
+                '                    </div>',
+                '                    <div class="cards-list">' + blockersHtml + '</div>',
+                '                </div>',
+                '                <div class="section">',
+                '                    <div class="section-header">',
+                '                        <h2>Updates (' + (project.updates?.length || 0) + ')</h2>',
+                '                        <button class="btn" onclick="addUpdate()">+ Add update</button>',
+                '                    </div>',
+                '                    <div class="cards-list">' + updatesHtml + '</div>',
+                '                </div>',
+                '            </div>',
+                '        </div>',
+                '    </main>',
                 '</div>'
-            ].join('');
+            ].flat().join('');
         }
 
         async function addUpdate() {
@@ -879,3 +934,4 @@ export const html = `<!DOCTYPE html>
 </body>
 </html>
 `;
+}
