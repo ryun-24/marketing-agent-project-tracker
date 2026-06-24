@@ -1018,6 +1018,127 @@ export function getPage(projectId, user = null) {
             }
         }
         
+        /* Shipped Section */
+        .shipped-section {
+            margin-top: 40px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        
+        .shipped-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        
+        .shipped-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .shipped-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .shipped-count {
+            background: var(--bg);
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .shipped-date {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .shipped-table-container {
+            padding: 0;
+        }
+        
+        .shipped-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .shipped-table th {
+            text-align: left;
+            padding: 12px 20px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .shipped-table td {
+            padding: 14px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .shipped-table tbody tr {
+            cursor: pointer;
+            transition: background 0.15s ease;
+        }
+        
+        .shipped-table tbody tr:hover {
+            background: var(--bg);
+        }
+        
+        .shipped-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .col-project {
+            width: 50%;
+        }
+        
+        .col-team {
+            width: 30%;
+        }
+        
+        .col-date {
+            width: 20%;
+            text-align: right;
+        }
+        
+        .shipped-project-name {
+            color: #f97316;
+            font-weight: 500;
+        }
+        
+        .shipped-team {
+            color: var(--text-secondary);
+        }
+        
+        .shipped-date-cell {
+            color: var(--text-muted);
+            text-align: right;
+        }
+        
+        .shipped-empty {
+            padding: 40px 20px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 14px;
+            display: none;
+        }
+        
+        .shipped-empty.visible {
+            display: block;
+        }
+        
         /* Priority Tabs */
         .priority-tabs {
             display: flex;
@@ -1773,14 +1894,14 @@ export function getPage(projectId, user = null) {
                         <div class="overview-subtext">Need attention</div>
                     </div>
                     <div class="overview-card">
-                        <div class="overview-label">At Risk</div>
-                        <div class="overview-value warning" id="overview-risk">0</div>
-                        <div class="overview-subtext">Projects off track</div>
+                        <div class="overview-label">Shipped This Week</div>
+                        <div class="overview-value success" id="overview-shipped">0</div>
+                        <div class="overview-subtext">Completed projects</div>
                     </div>
                     <div class="overview-card">
                         <div class="overview-label">Completed</div>
-                        <div class="overview-value success" id="overview-completed">0</div>
-                        <div class="overview-subtext">This month</div>
+                        <div class="overview-value" id="overview-completed">0</div>
+                        <div class="overview-subtext">All time</div>
                     </div>
                 </div>
             </div>
@@ -1797,6 +1918,32 @@ export function getPage(projectId, user = null) {
             <div class="projects-list" id="projectsList">
                 <!-- Populated by JS -->
                 <div class="loading"><div class="spinner"></div> Loading projects...</div>
+            </div>
+            
+            <!-- Shipped This Week Section -->
+            <div class="shipped-section">
+                <div class="shipped-header">
+                    <div class="shipped-title-row">
+                        <h3 class="shipped-title">Shipped This Week</h3>
+                        <span class="shipped-count" id="shipped-count">0</span>
+                    </div>
+                    <div class="shipped-date">Last 7 days</div>
+                </div>
+                <div class="shipped-table-container">
+                    <table class="shipped-table" id="shippedTable">
+                        <thead>
+                            <tr>
+                                <th class="col-project">Project</th>
+                                <th class="col-team">Team</th>
+                                <th class="col-date">Shipped</th>
+                            </tr>
+                        </thead>
+                        <tbody id="shippedTableBody">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                    <div class="shipped-empty" id="shippedEmpty">No projects shipped this week</div>
+                </div>
             </div>
         </main>
     </div>
@@ -1973,13 +2120,65 @@ export function getPage(projectId, user = null) {
             
             // Update overview section
             const totalBlockers = projects.reduce((sum, p) => sum + (p.open_blockers || 0), 0);
-            const atRisk = projects.filter(p => p.status === 'at_risk').length;
-            const completed = projects.filter(p => p.status === 'completed').length;
+            const completedAll = projects.filter(p => p.status === 'completed').length;
+            
+            // Calculate shipped this week (completed projects updated in last 7 days)
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const shippedThisWeek = projects.filter(p => {
+                if (p.status !== 'completed') return false;
+                if (!p.updated_at) return false;
+                const updated = new Date(p.updated_at);
+                return updated >= oneWeekAgo;
+            }).length;
             
             document.getElementById('overview-total').textContent = projects.length;
             document.getElementById('overview-blockers').textContent = totalBlockers;
-            document.getElementById('overview-risk').textContent = atRisk;
-            document.getElementById('overview-completed').textContent = completed;
+            document.getElementById('overview-shipped').textContent = shippedThisWeek;
+            document.getElementById('overview-completed').textContent = completedAll;
+            
+            // Render shipped table
+            renderShippedTable(projects);
+        }
+        
+        function renderShippedTable(projects) {
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            
+            const shippedProjects = projects.filter(p => {
+                if (p.status !== 'completed') return false;
+                if (!p.updated_at) return false;
+                const updated = new Date(p.updated_at);
+                return updated >= oneWeekAgo;
+            }).sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+            
+            document.getElementById('shipped-count').textContent = shippedProjects.length;
+            
+            const tbody = document.getElementById('shippedTableBody');
+            const emptyState = document.getElementById('shippedEmpty');
+            const table = document.getElementById('shippedTable');
+            
+            if (shippedProjects.length === 0) {
+                table.style.display = 'none';
+                emptyState.classList.add('visible');
+                return;
+            }
+            
+            table.style.display = 'table';
+            emptyState.classList.remove('visible');
+            
+            tbody.innerHTML = shippedProjects.map(p => {
+                const dateStr = p.updated_at 
+                    ? new Date(p.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                    : '-';
+                return [
+                    '<tr onclick="openDetail(' + p.id + ')">',
+                    '    <td><span class="shipped-project-name">' + escapeHtml(p.name) + '</span></td>',
+                    '    <td><span class="shipped-team">' + escapeHtml(p.team || 'No team') + '</span></td>',
+                    '    <td class="shipped-date-cell">' + dateStr + '</td>',
+                    '</tr>'
+                ].join('');
+            }).join('');
         }
 
         function renderProjectsList() {
