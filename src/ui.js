@@ -1665,28 +1665,44 @@ export function getPage(projectId, user = null) {
         }
 
         function renderBoard(projects) {
-            // Group by team
-            const teams = {};
+            // Map stage/status to priority levels
+            function getPriority(project) {
+                // Map stage to priority: now=P0, next=P1, later=P2, default=P3
+                if (project.stage === 'now') return 'P0 - Now';
+                if (project.stage === 'next') return 'P1 - Next';
+                if (project.stage === 'later') return 'P2 - Later';
+                return 'P3 - Backlog';
+            }
+            
+            // Group by priority
+            const priorities = {
+                'P0 - Now': [],
+                'P1 - Next': [],
+                'P2 - Later': [],
+                'P3 - Backlog': []
+            };
+            
             projects.forEach(p => {
-                const team = p.team || 'No team';
-                if (!teams[team]) teams[team] = [];
-                teams[team].push(p);
+                const priority = getPriority(p);
+                priorities[priority].push(p);
             });
             
-            // Sort teams alphabetically
-            const sortedTeams = Object.keys(teams).sort();
+            // Priority order
+            const priorityOrder = ['P0 - Now', 'P1 - Next', 'P2 - Later', 'P3 - Backlog'];
             
             let html = '';
-            sortedTeams.forEach(team => {
-                const teamProjects = teams[team];
+            priorityOrder.forEach(priority => {
+                const priorityProjects = priorities[priority];
+                if (priorityProjects.length === 0) return; // Skip empty columns
+                
                 html += [
                     '<div class="team-column">',
                     '    <div class="team-column-header">',
-                    '        <span class="team-column-title">' + escapeHtml(team) + '</span>',
-                    '        <span class="team-column-count">' + teamProjects.length + '</span>',
+                    '        <span class="team-column-title">' + priority + '</span>',
+                    '        <span class="team-column-count">' + priorityProjects.length + '</span>',
                     '    </div>',
                     '    <div class="team-card-list">',
-                    teamProjects.map(p => renderProjectCard(p)).join(''),
+                    priorityProjects.map(p => renderProjectCard(p)).join(''),
                     '    </div>',
                     '</div>'
                 ].join('');
