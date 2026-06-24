@@ -2048,10 +2048,6 @@ export function getPage(projectId, user = null) {
                     Global board
                     <span class="nav-count" id="nav-global-count">11</span>
                 </a>
-                <a href="/?view=my" class="nav-item">
-                    <span class="nav-icon">📋</span>
-                    My board
-                </a>
             </nav>
             
             <div class="sidebar-section">
