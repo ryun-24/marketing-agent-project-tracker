@@ -950,6 +950,74 @@ export function getPage(projectId, user = null) {
             color: var(--text-primary);
         }
         
+        /* Overview Section */
+        .overview-section {
+            margin-bottom: 32px;
+        }
+        
+        .overview-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .overview-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        
+        .overview-stats {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+        }
+        
+        .overview-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 16px;
+        }
+        
+        .overview-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+        
+        .overview-value {
+            font-size: 28px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+        
+        .overview-value.danger {
+            color: #dc2626;
+        }
+        
+        .overview-value.warning {
+            color: #d97706;
+        }
+        
+        .overview-value.success {
+            color: #16a34a;
+        }
+        
+        .overview-subtext {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        @media (max-width: 768px) {
+            .overview-stats {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
         /* Priority Tabs */
         .priority-tabs {
             display: flex;
@@ -1688,6 +1756,35 @@ export function getPage(projectId, user = null) {
                 </div>
             </div>
 
+            <!-- Overview Section -->
+            <div class="overview-section">
+                <h2 class="overview-title">Overview</h2>
+                <p class="overview-subtitle">Organization-wide summary across all teams</p>
+                
+                <div class="overview-stats">
+                    <div class="overview-card">
+                        <div class="overview-label">Total Projects</div>
+                        <div class="overview-value" id="overview-total">0</div>
+                        <div class="overview-subtext">Active projects</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Open Blockers</div>
+                        <div class="overview-value danger" id="overview-blockers">0</div>
+                        <div class="overview-subtext">Need attention</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">At Risk</div>
+                        <div class="overview-value warning" id="overview-risk">0</div>
+                        <div class="overview-subtext">Projects off track</div>
+                    </div>
+                    <div class="overview-card">
+                        <div class="overview-label">Completed</div>
+                        <div class="overview-value success" id="overview-completed">0</div>
+                        <div class="overview-subtext">This month</div>
+                    </div>
+                </div>
+            </div>
+            
             <!-- Priority Tabs -->
             <div class="priority-tabs">
                 <button class="priority-tab active" onclick="showPriority('P0')" data-priority="P0">P0</button>
@@ -1867,11 +1964,22 @@ export function getPage(projectId, user = null) {
         }
 
         function updateStats(projects) {
+            // Update top bar stats
             document.getElementById('total-projects').textContent = projects.length;
             document.getElementById('count-ontrack').textContent = projects.filter(p => p.status === 'on_track').length;
             document.getElementById('count-atrisk').textContent = projects.filter(p => p.status === 'at_risk').length;
             document.getElementById('count-blocked').textContent = projects.filter(p => p.status === 'blocked').length;
             document.getElementById('nav-global-count').textContent = projects.length;
+            
+            // Update overview section
+            const totalBlockers = projects.reduce((sum, p) => sum + (p.open_blockers || 0), 0);
+            const atRisk = projects.filter(p => p.status === 'at_risk').length;
+            const completed = projects.filter(p => p.status === 'completed').length;
+            
+            document.getElementById('overview-total').textContent = projects.length;
+            document.getElementById('overview-blockers').textContent = totalBlockers;
+            document.getElementById('overview-risk').textContent = atRisk;
+            document.getElementById('overview-completed').textContent = completed;
         }
 
         function renderProjectsList() {
