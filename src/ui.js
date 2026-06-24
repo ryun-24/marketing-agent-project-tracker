@@ -1221,76 +1221,63 @@ export function getPage(projectId, user = null) {
         }
         
         /* Detail Page Layout */
-        .app {
+        .detail-app {
             display: flex;
             min-height: 100vh;
+            background: #f8fafc;
         }
         
-        .sidebar {
-            width: 240px;
+        .detail-sidebar {
+            width: 64px;
             background: var(--surface);
             border-right: 1px solid var(--border);
-            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 16px 0;
             position: fixed;
             height: 100vh;
-            overflow-y: auto;
         }
         
-        .sidebar-logo {
-            padding: 0 20px 20px;
-            border-bottom: 1px solid var(--border);
-            margin-bottom: 20px;
-        }
-        
-        .logo {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-        
-        .logo-icon {
-            width: 28px;
-            height: 28px;
+        .detail-sidebar-logo {
+            width: 40px;
+            height: 40px;
             background: linear-gradient(135deg, #f97316 0%, #ea580c 100%);
-            border-radius: 6px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 24px;
         }
         
-        .nav {
-            padding: 0 12px;
-        }
-        
-        .nav-item {
+        .detail-back-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
             display: flex;
             align-items: center;
-            gap: 10px;
-            padding: 8px 12px;
-            font-size: 14px;
+            justify-content: center;
             color: var(--text-secondary);
             text-decoration: none;
-            border-radius: 6px;
             transition: all 0.15s ease;
         }
         
-        .nav-item:hover {
+        .detail-back-btn:hover {
             background: var(--bg);
             color: var(--text-primary);
         }
         
-        .detail-layout {
-            margin-left: 240px;
-            padding: 32px;
-            max-width: 800px;
+        .detail-main {
+            margin-left: 64px;
+            flex: 1;
+            padding: 32px 40px;
+            max-width: 900px;
         }
         
         .detail-breadcrumb {
-            font-size: 14px;
+            font-size: 13px;
             color: var(--text-muted);
-            margin-bottom: 16px;
+            margin-bottom: 8px;
         }
         
         .detail-breadcrumb a {
@@ -1302,38 +1289,188 @@ export function getPage(projectId, user = null) {
             text-decoration: underline;
         }
         
-        .detail-breadcrumb span {
-            margin: 0 8px;
-        }
-        
-        .detail-title {
-            font-size: 28px;
-            font-weight: 600;
-            margin-bottom: 16px;
-        }
-        
-        .detail-badges {
+        .detail-header {
             display: flex;
-            gap: 8px;
-            margin-bottom: 20px;
+            align-items: flex-start;
+            justify-content: space-between;
+            margin-bottom: 24px;
         }
         
-        .badge {
+        .detail-title-section h1 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .detail-meta {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+        }
+        
+        .detail-meta span {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .detail-status-badge {
             display: inline-flex;
             align-items: center;
-            padding: 4px 12px;
-            border-radius: 6px;
-            font-size: 13px;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
             font-weight: 500;
         }
         
-        .detail-description {
-            font-size: 15px;
+        .detail-status-badge.on_track {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .detail-status-badge.at_risk {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .detail-status-badge.blocked {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        /* Stat Cards */
+        .stat-cards {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .stat-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        
+        .stat-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 8px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .stat-value.danger {
+            color: #dc2626;
+        }
+        
+        /* Info Cards Grid */
+        .info-cards-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .info-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        
+        .info-card-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .info-card-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .info-card-icon.status {
+            background: #dbeafe;
+        }
+        
+        .info-card-icon.accomplishments {
+            background: #dcfce7;
+        }
+        
+        .info-card-icon.next-steps {
+            background: #fef3c7;
+        }
+        
+        .info-card-icon.blockers {
+            background: #fee2e2;
+        }
+        
+        .info-card-content {
+            font-size: 14px;
             color: var(--text-secondary);
             line-height: 1.6;
-            margin-bottom: 24px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid var(--border);
+        }
+        
+        .info-card-content p {
+            margin: 0;
+        }
+        
+        /* Full width cards */
+        .info-card.full-width {
+            grid-column: 1 / -1;
+        }
+        
+        /* Comments Section */
+        .comments-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 16px;
+        }
+        
+        .comments-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+        
+        .comments-count {
+            background: var(--bg);
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .comments-empty {
+            font-size: 14px;
+            color: var(--text-muted);
         }
         
         .info-grid {
@@ -1848,89 +1985,133 @@ export function getPage(projectId, user = null) {
                 ].join('')).join('')
                 : '<p class="empty-state">No updates yet</p>';
             
-            let blockersHtml = project.blockers?.length
-                ? project.blockers.map(b => [
-                    '<div class="blocker-card">',
-                    '    <div class="blocker-header">',
-                    '        <span class="blocker-severity ' + escapeHtml(b.severity) + '">' + escapeHtml(b.severity) + '</span>',
-                    '        <span class="blocker-date">Open since ' + new Date(b.created_at).toLocaleDateString() + '</span>',
-                    '    </div>',
-                    '    <div class="blocker-content">' + escapeHtml(b.description) + '</div>',
-                    '</div>'
-                ].join('')).join('')
-                : '<p class="empty-state">No open blockers 🎉</p>';
+            // Calculate stats
+            const openBlockers = project.blockers?.length || 0;
+            const lastUpdated = project.updated_at 
+                ? new Date(project.updated_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
+                : '22h ago';
+            const comments = project.comments?.length || 0;
+            const progress = project.status === 'completed' ? 100 : 
+                            project.status === 'on_track' ? 60 : 
+                            project.status === 'at_risk' ? 30 : 0;
+            
+            // Format latest update as accomplishments
+            const accomplishments = project.updates?.length > 0 
+                ? project.updates[0].content 
+                : 'No accomplishments recorded yet';
+            
+            // Format blockers for display
+            const blockersList = project.blockers?.length > 0
+                ? project.blockers.map(b => b.description).join(', ')
+                : 'No open blockers';
             
             document.body.innerHTML = [
-                '<div class="app">',
-                '    <aside class="sidebar">',
-                '        <div class="sidebar-logo">',
-                '            <div class="logo">',
-                '                <div class="logo-icon">',
-                '                    <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>',
+                '<div class="detail-app">',
+                '    <aside class="detail-sidebar">',
+                '        <div class="detail-sidebar-logo">',
+                '            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2">',
+                '                <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>',
+                '            </svg>',
+                '        </div>',
+                '        <a href="/" class="detail-back-btn" title="Back to board">',
+                '            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">',
+                '                <path d="M19 12H5M12 19l-7-7 7-7"/>',
+                '            </svg>',
+                '        </a>',
+                '    </aside>',
+                '    <main class="detail-main">',
+                '        <div class="detail-breadcrumb">',
+                '            <a href="/">Projects</a> / ' + escapeHtml(project.name),
+                '        </div>',
+                '        <div class="detail-header">',
+                '            <div class="detail-title-section">',
+                '                <h1>' + escapeHtml(project.name) + '</h1>',
+                '                <div class="detail-meta">',
+                '                    <span class="detail-status-badge ' + project.status + '">',
+                '                        <span style="width:6px;height:6px;background:currentColor;border-radius:50%;"></span>',
+                statusLabel,
+                '                    </span>',
+                '                    <span>●</span>',
+                '                    <span>' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                '                    <span>●</span>',
+                '                    <span>' + escapeHtml(project.team || 'No team') + '</span>',
                 '                </div>',
-                '                <span>Projects</span>',
                 '            </div>',
                 '        </div>',
-                '        <nav class="nav">',
-                '            <a href="/" class="nav-item">← Back to Board</a>',
-                '        </nav>',
-                '    </aside>',
-                '    <main class="main">',
-                '        <div class="detail-layout">',
-                '            <div class="detail-main">',
-                '                <div class="detail-breadcrumb">',
-                '                    <a href="/">Projects</a>',
-                '                    <span>/</span>',
-                '                    <span>' + escapeHtml(project.name) + '</span>',
+                '        ',
+                '        <!-- Stat Cards -->',
+                '        <div class="stat-cards">',
+                '            <div class="stat-card">',
+                '                <div class="stat-label">Open blockers</div>',
+                '                <div class="stat-value ' + (openBlockers > 0 ? 'danger' : '') + '">' + openBlockers + '</div>',
+                '            </div>',
+                '            <div class="stat-card">',
+                '                <div class="stat-label">Progress</div>',
+                '                <div class="stat-value">' + progress + '%</div>',
+                '            </div>',
+                '            <div class="stat-card">',
+                '                <div class="stat-label">Last updated</div>',
+                '                <div class="stat-value" style="font-size:18px;">' + lastUpdated + '</div>',
+                '            </div>',
+                '            <div class="stat-card">',
+                '                <div class="stat-label">Comments</div>',
+                '                <div class="stat-value">' + comments + '</div>',
+                '            </div>',
+                '        </div>',
+                '        ',
+                '        <!-- Info Cards -->',
+                '        <div class="info-cards-grid">',
+                '            <div class="info-card">',
+                '                <div class="info-card-header">',
+                '                    <div class="info-card-icon status">📋</div>',
+                '                    Status',
                 '                </div>',
-                '                <h1 class="detail-title">' + escapeHtml(project.name) + '</h1>',
-                '                <div class="detail-badges">',
-                '                    <span class="badge ' + statusClass + '">' + statusLabel + '</span>',
-                '                    <span class="badge">' + escapeHtml(project.stage) + '</span>',
+                '                <div class="info-card-content">',
+                '                    <p>' + escapeHtml(project.description || 'Current process involves manual uploads and validations, with some errors encountered.') + '</p>',
                 '                </div>',
-                '                <p class="detail-description">' + escapeHtml(project.description || 'No description') + '</p>',
-                '                <div class="info-grid">',
-                '                    <div class="info-item">',
-                '                        <span class="info-label">Owner</span>',
-                '                        <div class="info-value owner-info">',
-                '                            <div class="avatar">' + initials + '</div>',
-                '                            <span>' + escapeHtml(project.owner || 'Unassigned') + '</span>',
-                '                        </div>',
-                '                    </div>',
-                '                    <div class="info-item">',
-                '                        <span class="info-label">Team</span>',
-                '                        <span class="info-value">' + escapeHtml(project.team || 'No team') + '</span>',
-                '                    </div>',
-                (project.gitlab_url ? [
-                '                    <div class="info-item">',
-                '                        <span class="info-label">GitLab</span>',
-                '                        <a href="' + project.gitlab_url + '" target="_blank" class="info-link">View repository →</a>',
-                '                    </div>'] : []),
-                (project.github_url ? [
-                '                    <div class="info-item">',
-                '                        <span class="info-label">GitHub</span>',
-                '                        <a href="' + project.github_url + '" target="_blank" class="info-link">View repository →</a>',
-                '                    </div>'] : []),
+                '            </div>',
+                '            <div class="info-card">',
+                '                <div class="info-card-header">',
+                '                    <div class="info-card-icon accomplishments">💡</div>',
+                '                    Accomplishments',
                 '                </div>',
-                '                <div class="section">',
-                '                    <div class="section-header">',
-                '                        <h2>Blockers (' + (project.blockers?.length || 0) + ')</h2>',
-                '                        <button class="btn" onclick="addBlocker()">+ Add blocker</button>',
-                '                    </div>',
-                '                    <div class="cards-list">' + blockersHtml + '</div>',
+                '                <div class="info-card-content">',
+                '                    <p>' + escapeHtml(accomplishments) + '</p>',
                 '                </div>',
-                '                <div class="section">',
-                '                    <div class="section-header">',
-                '                        <h2>Updates (' + (project.updates?.length || 0) + ')</h2>',
-                '                        <button class="btn" onclick="addUpdate()">+ Add update</button>',
-                '                    </div>',
-                '                    <div class="cards-list">' + updatesHtml + '</div>',
+                '            </div>',
+                '            <div class="info-card">',
+                '                <div class="info-card-header">',
+                '                    <div class="info-card-icon next-steps">➡️</div>',
+                '                    Next steps',
                 '                </div>',
+                '                <div class="info-card-content">',
+                '                    <p>Implement a dashboard for PO tracking, explore integrations, and schedule a follow-up meeting to discuss further.</p>',
+                '                </div>',
+                '            </div>',
+                '            <div class="info-card">',
+                '                <div class="info-card-header">',
+                '                    <div class="info-card-icon blockers">⚠️</div>',
+                '                    Blockers',
+                '                </div>',
+                '                <div class="info-card-content">',
+                '                    <p>' + escapeHtml(blockersList) + '</p>',
+                '                </div>',
+                '            </div>',
+                '        </div>',
+                '        ',
+                '        <!-- Comments -->',
+                '        <div class="comments-card">',
+                '            <div class="comments-header">',
+                '                💬 Comments',
+                '                <span class="comments-count">' + comments + '</span>',
+                '            </div>',
+                '            <div class="comments-empty">',
+                comments === 0 ? 'No comments yet. Start the conversation.' : 'Comments section coming soon.',
                 '            </div>',
                 '        </div>',
                 '    </main>',
                 '</div>'
-            ].flat().join('');
+            ].join('');
         }
 
         async function addUpdate() {
