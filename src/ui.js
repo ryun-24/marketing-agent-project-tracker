@@ -1419,31 +1419,6 @@ export function getPage(projectId, user = null) {
                     <!-- Teams populated by JS -->
                 </div>
             </div>
-            
-            <div class="sidebar-section">
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">🤖</span>
-                    AI & Automation
-                </a>
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">📝</span>
-                    Import notes
-                </a>
-                <a href="#" class="nav-item">
-                    <span class="nav-icon">🔗</span>
-                    Connect AI client
-                </a>
-            </div>
-            
-            <div class="sidebar-footer">
-                <div class="user-profile">
-                    <div class="user-avatar">RY</div>
-                    <div class="user-info">
-                        <div class="user-name">Rachel Yun</div>
-                        <div class="user-email">ryun@cloudflare.com</div>
-                    </div>
-                </div>
-            </div>
         </aside>
 
         <!-- Main Content -->
