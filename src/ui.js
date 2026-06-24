@@ -1,7 +1,8 @@
 // UI Template for Project Tracker - Clean Professional Design
 
-export function getPage(projectId) {
+export function getPage(projectId, user = null) {
     const isDetail = !!projectId;
+    const userDisplay = user ? `<span style="margin-left:auto;font-size:13px;color:var(--text-secondary);">${user.email}</span>` : '';
     
     return `<!DOCTYPE html>
 <html lang="en">
@@ -783,6 +784,7 @@ export function getPage(projectId) {
                 <h1>Project Tracker</h1>
                 <span class="header-subtitle">Marketing Agents</span>
             </div>
+            ${userDisplay}
             <button class="btn btn-primary" onclick="openCreateModal()">
                 <svg width="14" height="14" viewBox="0 0 14 14" fill="none"><path d="M7 1v12M1 7h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
                 New Project
