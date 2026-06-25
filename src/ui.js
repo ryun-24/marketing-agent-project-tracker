@@ -1072,6 +1072,16 @@ export function getPage(projectId, user = null) {
             }
         }
         
+        /* View Transitions - Smooth switching between views */
+        #global-view, #all-projects-view {
+            animation: fadeIn 0.2s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0.8; }
+            to { opacity: 1; }
+        }
+        
         /* Shipped Section */
         .shipped-section {
             background: var(--surface);
@@ -2385,6 +2395,7 @@ export function getPage(projectId, user = null) {
         let currentView = 'global';
 
         function switchView(view) {
+            if (view === currentView) return;
             currentView = view;
             
             // Update sidebar active states
@@ -2394,9 +2405,21 @@ export function getPage(projectId, user = null) {
             // Update page title
             document.getElementById('page-title').textContent = view === 'global' ? 'Global board' : 'Landing Page';
             
-            // Show/hide views
-            document.getElementById('global-view').style.display = view === 'global' ? 'block' : 'none';
-            document.getElementById('all-projects-view').style.display = view === 'all' ? 'block' : 'none';
+            // Show/hide views with RAF for smooth transition
+            const globalView = document.getElementById('global-view');
+            const allProjectsView = document.getElementById('all-projects-view');
+            
+            if (view === 'global') {
+                allProjectsView.style.display = 'none';
+                requestAnimationFrame(() => {
+                    globalView.style.display = 'block';
+                });
+            } else {
+                globalView.style.display = 'none';
+                requestAnimationFrame(() => {
+                    allProjectsView.style.display = 'block';
+                });
+            }
             
             // Update URL without page reload
             if (view === 'all') {
