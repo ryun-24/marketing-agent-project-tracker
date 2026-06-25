@@ -2043,10 +2043,15 @@ export function getPage(projectId, user = null) {
             </div>
             
             <nav class="sidebar-nav">
-                <a href="/" class="nav-item active">
+                <a href="/" class="nav-item active" id="nav-global" onclick="switchView('global')">
                     <span class="nav-icon">🌐</span>
                     Global board
                     <span class="nav-count" id="nav-global-count">11</span>
+                </a>
+                <a href="/?view=all" class="nav-item" id="nav-all" onclick="switchView('all'); return false;">
+                    <span class="nav-icon">📋</span>
+                    All Projects
+                    <span class="nav-count" id="nav-all-count">0</span>
                 </a>
             </nav>
             
@@ -2068,7 +2073,7 @@ export function getPage(projectId, user = null) {
             <!-- Top Bar -->
             <div class="top-bar">
                 <div class="top-bar-left">
-                    <h1>Global board</h1>
+                    <h1 id="page-title">Global board</h1>
                     <span class="live-badge">● Live</span>
                 </div>
                 
@@ -2115,6 +2120,9 @@ export function getPage(projectId, user = null) {
                     <button class="view-btn">☰</button>
                 </div>
             </div>
+
+            <!-- Global Board View -->
+            <div id="global-view">
 
             <!-- Overview Section -->
             <div class="overview-section">
@@ -2217,6 +2225,12 @@ export function getPage(projectId, user = null) {
                         <div class="shipped-empty" id="updatesEmpty">No updates this week</div>
                     </div>
                 </div>
+            </div>
+            </div><!-- /global-view -->
+            
+            <!-- All Projects View -->
+            <div id="all-projects-view" style="display:none;">
+                <!-- Landing Page content will go here -->
             </div>
         </main>
     </div>
@@ -2330,6 +2344,13 @@ export function getPage(projectId, user = null) {
                 await loadProjectDetail(urlProjectId);
             } else {
                 await loadProjects();
+                
+                // Check URL for view parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const view = urlParams.get('view');
+                if (view === 'all') {
+                    switchView('all');
+                }
             }
             // Hide loading overlay after view is fully rendered
             const loading = document.getElementById('initialLoading');
@@ -2361,6 +2382,37 @@ export function getPage(projectId, user = null) {
         let allProjects = [];
         let filteredProjects = [];
         let currentPriority = 'P0';
+        let currentView = 'global';
+
+        function switchView(view) {
+            currentView = view;
+            
+            // Update sidebar active states
+            document.getElementById('nav-global').classList.toggle('active', view === 'global');
+            document.getElementById('nav-all').classList.toggle('active', view === 'all');
+            
+            // Update page title
+            document.getElementById('page-title').textContent = view === 'global' ? 'Global board' : 'Landing Page';
+            
+            // Show/hide views
+            document.getElementById('global-view').style.display = view === 'global' ? 'block' : 'none';
+            document.getElementById('all-projects-view').style.display = view === 'all' ? 'block' : 'none';
+            
+            // Update URL without page reload
+            if (view === 'all') {
+                history.pushState({view: 'all'}, '', '/?view=all');
+            } else {
+                history.pushState({view: 'global'}, '', '/');
+            }
+        }
+
+        // Handle browser back/forward buttons
+        window.addEventListener('popstate', (e) => {
+            const view = e.state?.view || 'global';
+            if (view !== currentView) {
+                switchView(view);
+            }
+        });
 
         async function loadProjects() {
             try {
@@ -2375,11 +2427,25 @@ export function getPage(projectId, user = null) {
                 
                 filteredProjects = allProjects;
                 console.log('Loaded projects:', allProjects.length);
+                
+                // Update sidebar counts
+                document.getElementById('nav-global-count').textContent = allProjects.length;
+                document.getElementById('nav-all-count').textContent = allProjects.length;
+                
                 renderProjectsList();
                 updateStats(allProjects);
             } catch (err) {
                 console.error('Failed to load projects:', err);
-                document.getElementById('projectsList').innerHTML = '<div class="empty-state">Error loading projects. Please refresh.</div>';
+                // Fallback to demo projects
+                allProjects = [...demoProjects];
+                filteredProjects = allProjects;
+                
+                // Update sidebar counts
+                document.getElementById('nav-global-count').textContent = allProjects.length;
+                document.getElementById('nav-all-count').textContent = allProjects.length;
+                
+                renderProjectsList();
+                updateStats(allProjects);
             }
         }
 
