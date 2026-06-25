@@ -1074,12 +1074,7 @@ export function getPage(projectId, user = null) {
         
         /* View Transitions - Smooth switching between views */
         #global-view, #all-projects-view {
-            animation: fadeIn 0.2s ease-in-out;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0.8; }
-            to { opacity: 1; }
+            width: 100%;
         }
         
         /* Shipped Section */
@@ -2131,8 +2126,11 @@ export function getPage(projectId, user = null) {
                 </div>
             </div>
 
+            <!-- Views Container -->
+            <div class="views-container" style="position:relative;min-height:500px;">
+            
             <!-- Global Board View -->
-            <div id="global-view">
+            <div id="global-view" style="visibility:visible;position:relative;">
 
             <!-- Overview Section -->
             <div class="overview-section">
@@ -2239,9 +2237,10 @@ export function getPage(projectId, user = null) {
             </div><!-- /global-view -->
             
             <!-- All Projects View -->
-            <div id="all-projects-view" style="display:none;">
+            <div id="all-projects-view" style="visibility:hidden;position:absolute;">
                 <!-- Landing Page content will go here -->
             </div>
+            </div><!-- /views-container -->
         </main>
     </div>
 
@@ -2405,20 +2404,16 @@ export function getPage(projectId, user = null) {
             // Update page title
             document.getElementById('page-title').textContent = view === 'global' ? 'Global board' : 'Landing Page';
             
-            // Show/hide views with RAF for smooth transition
+            // Show/hide views using visibility only (no display changes)
             const globalView = document.getElementById('global-view');
             const allProjectsView = document.getElementById('all-projects-view');
             
             if (view === 'global') {
-                allProjectsView.style.display = 'none';
-                requestAnimationFrame(() => {
-                    globalView.style.display = 'block';
-                });
+                allProjectsView.style.visibility = 'hidden';
+                globalView.style.visibility = 'visible';
             } else {
-                globalView.style.display = 'none';
-                requestAnimationFrame(() => {
-                    allProjectsView.style.display = 'block';
-                });
+                globalView.style.visibility = 'hidden';
+                allProjectsView.style.visibility = 'visible';
             }
             
             // Update URL without page reload
