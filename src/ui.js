@@ -658,6 +658,11 @@ export function getPage(projectId, user = null) {
             border-radius: 10px;
         }
         
+        /* Hide Global Board count badge */
+        #nav-global-count {
+            display: none;
+        }
+        
         .sidebar-section {
             margin-top: 16px;
             padding-top: 16px;
