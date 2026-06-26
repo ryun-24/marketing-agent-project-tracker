@@ -5,5 +5,5 @@ account_id = "651264654473ecfcd0cbaa5b3444a770"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "reporting-request-agent"
-database_id = "1f43306d-7a37-4fc3-886e-3727a3fba3fd"
+database_name = "marketing-agent-project-tracker"
+database_id = "5fbc03d4-2358-4f75-8995-c370dc402374"
