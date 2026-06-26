@@ -1,8 +1,9 @@
 name = "marketing-agent-project-tracker"
 main = "src/index.js"
 compatibility_date = "2026-06-23"
+account_id = "651264654473ecfcd0cbaa5b3444a770"
 
 [[d1_databases]]
 binding = "DB"
-database_name = "marketing-agent-projects"
-database_id = "103ee23c-ab58-4fd8-b86b-da27579bb098"
+database_name = "reporting-request-agent"
+database_id = "1f43306d-7a37-4fc3-886e-3727a3fba3fd"
