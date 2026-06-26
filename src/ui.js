@@ -2048,7 +2048,7 @@ export function getPage(projectId, user = null) {
             </div>
             
             <nav class="sidebar-nav">
-                <a href="/" class="nav-item active" id="nav-global" onclick="switchView('global')">
+                <a href="/" class="nav-item active" id="nav-global" onclick="switchView('global'); return false;">
                     <span class="nav-icon">🌐</span>
                     Global board
                     <span class="nav-count" id="nav-global-count">11</span>
