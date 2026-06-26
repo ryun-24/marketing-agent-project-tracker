@@ -2055,7 +2055,7 @@ export function getPage(projectId, user = null) {
             <nav class="sidebar-nav">
                 <a href="/" class="nav-item active" id="nav-global" onclick="switchView('global'); return false;">
                     <span class="nav-icon">🌐</span>
-                    Global board
+                    Global Board
                     <span class="nav-count" id="nav-global-count">11</span>
                 </a>
                 <a href="/?view=all" class="nav-item" id="nav-all" onclick="switchView('all'); return false;">
@@ -2407,7 +2407,7 @@ export function getPage(projectId, user = null) {
             document.getElementById('nav-all').classList.toggle('active', view === 'all');
             
             // Update page title
-            document.getElementById('page-title').textContent = view === 'global' ? 'Global board' : 'All Projects';
+            document.getElementById('page-title').textContent = view === 'global' ? 'Global Board' : 'All Projects';
             
             // Show/hide views using visibility only (no display changes)
             const globalView = document.getElementById('global-view');
