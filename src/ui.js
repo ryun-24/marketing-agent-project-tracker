@@ -2407,7 +2407,7 @@ export function getPage(projectId, user = null) {
             document.getElementById('nav-all').classList.toggle('active', view === 'all');
             
             // Update page title
-            document.getElementById('page-title').textContent = view === 'global' ? 'Global board' : 'Landing Page';
+            document.getElementById('page-title').textContent = view === 'global' ? 'Global board' : 'All Projects';
             
             // Show/hide views using visibility only (no display changes)
             const globalView = document.getElementById('global-view');
