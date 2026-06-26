@@ -1072,9 +1072,14 @@ export function getPage(projectId, user = null) {
             }
         }
         
-        /* View Transitions - Smooth switching between views */
+        /* View Transitions - Instant switching, no animations */
         #global-view, #all-projects-view {
             width: 100%;
+            transition: none !important;
+        }
+        
+        #global-view *, #all-projects-view * {
+            transition: none !important;
         }
         
         /* Shipped Section */
