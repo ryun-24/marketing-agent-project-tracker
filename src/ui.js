@@ -1094,7 +1094,7 @@ export function getPage(projectId, user = null) {
         
         .all-project-row {
             display: grid;
-            grid-template-columns: auto 2fr 1fr 1fr 0.8fr 1fr auto;
+            grid-template-columns: auto 2fr 1fr 1fr 0.8fr 1fr;
             align-items: center;
             gap: 16px;
             padding: 16px;
@@ -2832,10 +2832,6 @@ export function getPage(projectId, user = null) {
                 '    <div class="all-project-field">',
                 '        <div class="field-label">Last Assessed</div>',
                 '        <div class="field-value">' + lastAssessed + '</div>',
-                '    </div>',
-                '    <div class="project-owner-sm">',
-                '        <div class="owner-avatar-sm">' + initials + '</div>',
-                '        <span>' + escapeHtml(project.owner || 'Unassigned') + '</span>',
                 '    </div>',
                 '</div>'
             ].join('');
