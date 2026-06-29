@@ -1136,11 +1136,31 @@ export function getPage(projectId, user = null) {
         
         .priority-badge {
             display: inline-block;
-            padding: 2px 8px;
-            background: var(--bg);
+            padding: 4px 10px;
             border-radius: 4px;
             font-size: 12px;
             font-weight: 600;
+            color: white;
+        }
+        
+        .field-value.priority-badge:contains("P0"),
+        .priority-badge.p0 {
+            background: #ef4444;
+        }
+        
+        .field-value.priority-badge:contains("P1"),
+        .priority-badge.p1 {
+            background: #f97316;
+        }
+        
+        .field-value.priority-badge:contains("P2"),
+        .priority-badge.p2 {
+            background: #eab308;
+        }
+        
+        .field-value.priority-badge:contains("P3"),
+        .priority-badge.p3 {
+            background: #22c55e;
         }
         
         /* Shipped Section */
@@ -2809,6 +2829,7 @@ export function getPage(projectId, user = null) {
             const initials = project.owner ? project.owner.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
             const blockerText = project.open_blockers > 0 ? '⚠️ ' + project.open_blockers + ' blocker' + (project.open_blockers > 1 ? 's' : '') : '';
             const lastAssessed = project.last_assessed ? new Date(project.last_assessed).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A';
+            const priorityClass = (project.priority || 'P3').toLowerCase();
             
             return [
                 '<div class="all-project-row" onclick="openDetail(' + project.id + ')">',
@@ -2827,7 +2848,7 @@ export function getPage(projectId, user = null) {
                 '    </div>',
                 '    <div class="all-project-field">',
                 '        <div class="field-label">Priority</div>',
-                '        <div class="field-value priority-badge">' + escapeHtml(project.priority || 'P3') + '</div>',
+                '        <div class="field-value priority-badge ' + priorityClass + '">' + escapeHtml(project.priority || 'P3') + '</div>',
                 '    </div>',
                 '    <div class="all-project-field">',
                 '        <div class="field-label">Last Assessed</div>',
