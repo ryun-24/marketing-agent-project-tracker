@@ -2177,12 +2177,6 @@ export function getPage(projectId, user = null) {
                 </div>
                 
                 <div class="top-bar-right">
-                    <div class="team-avatars">
-                        <div class="team-avatar" title="Active users">CJ</div>
-                        <div class="team-avatar" title="Active users">SM</div>
-                        <div class="team-avatar" title="Active users">...</div>
-                    </div>
-                    <span class="status-badge">Active ● 6</span>
                     <button class="btn-primary" onclick="openCreateModal()">+ New project</button>
                 </div>
             </div>
