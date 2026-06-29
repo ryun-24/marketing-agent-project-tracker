@@ -2368,11 +2368,12 @@ export function getPage(projectId, user = null) {
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label>Stage</label>
-                            <select name="stage">
-                                <option value="now">Now</option>
-                                <option value="next">Next</option>
-                                <option value="later" selected>Later</option>
+                            <label>Priority</label>
+                            <select name="priority">
+                                <option value="P0">P0</option>
+                                <option value="P1">P1</option>
+                                <option value="P2" selected>P2</option>
+                                <option value="P3">P3</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -2390,8 +2391,17 @@ export function getPage(projectId, user = null) {
                             <input type="text" name="owner" placeholder="e.g., Sarah Chen">
                         </div>
                         <div class="form-group">
-                            <label>Team</label>
-                            <input type="text" name="team" placeholder="e.g., Content Team">
+                            <label>Category</label>
+                            <select name="category">
+                                <option value="Content Creation">Content Creation</option>
+                                <option value="Analytics">Analytics</option>
+                                <option value="Automation">Automation</option>
+                                <option value="SEO">SEO</option>
+                                <option value="Social Media">Social Media</option>
+                                <option value="Product">Product</option>
+                                <option value="Integration">Integration</option>
+                                <option value="AI/ML">AI/ML</option>
+                            </select>
                         </div>
                     </div>
                     <div class="form-row">
