@@ -1087,6 +1087,11 @@ export function getPage(projectId, user = null) {
             transition: none !important;
         }
         
+        /* All Projects View */
+        .all-projects-container {
+            padding: 20px 0;
+        }
+        
         /* Shipped Section */
         .shipped-section {
             background: var(--surface);
@@ -2248,7 +2253,11 @@ export function getPage(projectId, user = null) {
             
             <!-- All Projects View -->
             <div id="all-projects-view" style="visibility:hidden;position:absolute;">
-                <!-- Landing Page content will go here -->
+                <div class="all-projects-container">
+                    <div class="projects-list" id="allProjectsList">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
             </div>
             </div><!-- /views-container -->
         </main>
@@ -2424,6 +2433,8 @@ export function getPage(projectId, user = null) {
             } else {
                 globalView.style.visibility = 'hidden';
                 allProjectsView.style.visibility = 'visible';
+                // Render all projects when switching to this view
+                renderAllProjectsList();
             }
             
             // Update URL without page reload
@@ -2726,6 +2737,20 @@ export function getPage(projectId, user = null) {
             }
             
             const html = priorityProjects.map(p => renderProjectRow(p)).join('');
+            container.innerHTML = html;
+        }
+
+        function renderAllProjectsList() {
+            const container = document.getElementById('allProjectsList');
+            if (!container) return;
+            
+            if (!allProjects || allProjects.length === 0) {
+                container.innerHTML = '<div class="empty-state">No projects found</div>';
+                return;
+            }
+            
+            // Render all projects using the same row format as Global Board
+            const html = allProjects.map(p => renderProjectRow(p)).join('');
             container.innerHTML = html;
         }
 
