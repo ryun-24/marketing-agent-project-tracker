@@ -1040,18 +1040,6 @@ export function getPage(projectId, user = null) {
             margin-bottom: 4px;
         }
         
-        .overview-value.danger {
-            color: #dc2626;
-        }
-        
-        .overview-value.warning {
-            color: #d97706;
-        }
-        
-        .overview-value.success {
-            color: #16a34a;
-        }
-        
         .overview-subtext {
             font-size: 12px;
             color: var(--text-muted);
