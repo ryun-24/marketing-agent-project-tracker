@@ -2142,10 +2142,10 @@ export function getPage(projectId, user = null) {
             </div>
 
             <!-- Views Container -->
-            <div class="views-container" style="position:relative;min-height:500px;">
+            <div class="views-container" style="position:relative;">
             
             <!-- Global Board View -->
-            <div id="global-view" style="visibility:visible;position:relative;">
+            <div id="global-view" style="visibility:visible;position:relative;width:100%;">
 
             <!-- Overview Section -->
             <div class="overview-section">
@@ -2252,7 +2252,7 @@ export function getPage(projectId, user = null) {
             </div><!-- /global-view -->
             
             <!-- All Projects View -->
-            <div id="all-projects-view" style="visibility:hidden;position:absolute;">
+            <div id="all-projects-view" style="visibility:hidden;position:absolute;top:0;left:0;width:100%;">
                 <div class="all-projects-container">
                     <div class="projects-list" id="allProjectsList">
                         <!-- Populated by JS -->
