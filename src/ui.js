@@ -1143,22 +1143,18 @@ export function getPage(projectId, user = null) {
             color: white;
         }
         
-        .field-value.priority-badge:contains("P0"),
         .priority-badge.p0 {
             background: #ef4444;
         }
         
-        .field-value.priority-badge:contains("P1"),
         .priority-badge.p1 {
             background: #f97316;
         }
         
-        .field-value.priority-badge:contains("P2"),
         .priority-badge.p2 {
             background: #eab308;
         }
         
-        .field-value.priority-badge:contains("P3"),
         .priority-badge.p3 {
             background: #22c55e;
         }
