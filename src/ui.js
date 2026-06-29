@@ -2864,6 +2864,13 @@ export function getPage(projectId, user = null) {
                 return;
             }
             
+            // Sort by last_assessed date (descending - most recent first)
+            displayProjects.sort((a, b) => {
+                const dateA = a.last_assessed ? new Date(a.last_assessed) : new Date(0);
+                const dateB = b.last_assessed ? new Date(b.last_assessed) : new Date(0);
+                return dateB - dateA;
+            });
+            
             // Render filtered projects with extended fields
             const html = displayProjects.map(p => renderAllProjectsRow(p)).join('');
             container.innerHTML = html;
