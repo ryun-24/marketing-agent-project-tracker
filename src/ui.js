@@ -658,7 +658,7 @@ export function getPage(projectId, user = null) {
             border-radius: 10px;
         }
         
-        /* Hide Global Board count badge */
+        /* Hide Executive Summary count badge */
         #nav-global-count {
             display: none;
         }
@@ -2116,7 +2116,7 @@ export function getPage(projectId, user = null) {
             <nav class="sidebar-nav">
                 <a href="/" class="nav-item active" id="nav-global" onclick="switchView('global'); return false;">
                     <span class="nav-icon">🌐</span>
-                    Global Board
+                    Executive Summary
                     <span class="nav-count" id="nav-global-count">11</span>
                 </a>
                 <a href="/?view=all" class="nav-item" id="nav-all" onclick="switchView('all'); return false;">
@@ -2195,7 +2195,7 @@ export function getPage(projectId, user = null) {
             <!-- Views Container -->
             <div class="views-container" style="position:relative;">
             
-            <!-- Global Board View -->
+            <!-- Executive Summary View -->
             <div id="global-view" style="visibility:visible;position:relative;width:100%;">
 
             <!-- Overview Section -->
@@ -2472,7 +2472,7 @@ export function getPage(projectId, user = null) {
             document.getElementById('nav-all').classList.toggle('active', view === 'all');
             
             // Update page title
-            document.getElementById('page-title').textContent = view === 'global' ? 'Global Board' : 'All Projects';
+            document.getElementById('page-title').textContent = view === 'global' ? 'Executive Summary' : 'All Projects';
             
             // Show/hide views using visibility only (no display changes)
             const globalView = document.getElementById('global-view');
