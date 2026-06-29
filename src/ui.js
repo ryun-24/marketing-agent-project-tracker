@@ -2284,7 +2284,7 @@ export function getPage(projectId, user = null) {
                             <thead>
                                 <tr>
                                     <th class="col-project">Project</th>
-                                    <th class="col-team">Team</th>
+                                    <th class="col-team">Category</th>
                                     <th class="col-date">Shipped</th>
                                 </tr>
                             </thead>
@@ -2713,7 +2713,7 @@ export function getPage(projectId, user = null) {
                 return [
                     '<tr onclick="openDetail(' + p.id + ')">',
                     '    <td><span class="shipped-project-name">' + escapeHtml(p.name) + '</span></td>',
-                    '    <td><span class="shipped-team">' + escapeHtml(p.team || 'No team') + '</span></td>',
+                    '    <td><span class="shipped-team">' + escapeHtml(p.category || 'Uncategorized') + '</span></td>',
                     '    <td class="shipped-date-cell">' + dateStr + '</td>',
                     '</tr>'
                 ].join('');
