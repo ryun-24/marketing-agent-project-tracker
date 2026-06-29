@@ -2622,14 +2622,22 @@ export function getPage(projectId, user = null) {
                 filteredProjects = allProjects.filter(p => 
                     p.name.toLowerCase().includes(searchTerm) || 
                     (p.description && p.description.toLowerCase().includes(searchTerm)) ||
-                    (p.team && p.team.toLowerCase().includes(searchTerm))
+                    (p.team && p.team.toLowerCase().includes(searchTerm)) ||
+                    (p.category && p.category.toLowerCase().includes(searchTerm)) ||
+                    (p.owner && p.owner.toLowerCase().includes(searchTerm))
                 );
                 if (indicator) {
                     indicator.style.display = 'flex';
                     if (countSpan) countSpan.textContent = filteredProjects.length;
                 }
             }
-            renderProjectsList();
+            
+            // Render based on current view
+            if (currentView === 'global') {
+                renderProjectsList();
+            } else {
+                renderAllProjectsList();
+            }
         }
         
         function showSearchActive() {
@@ -2853,10 +2861,14 @@ export function getPage(projectId, user = null) {
                 return;
             }
             
+            // Use filteredProjects (for search) or allProjects
+            let displayProjects = filteredProjects.length > 0 || document.getElementById('searchInput').value !== '' 
+                ? filteredProjects 
+                : allProjects;
+            
             // Filter by category
-            let displayProjects = allProjects;
             if (currentCategory !== 'all') {
-                displayProjects = allProjects.filter(p => p.category === currentCategory);
+                displayProjects = displayProjects.filter(p => p.category === currentCategory);
             }
             
             if (displayProjects.length === 0) {
