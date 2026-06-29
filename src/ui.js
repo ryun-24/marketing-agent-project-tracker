@@ -2161,7 +2161,7 @@ export function getPage(projectId, user = null) {
                     <span class="live-badge">● Live</span>
                 </div>
                 
-                <div class="top-bar-center">
+                <div class="top-bar-right">
                     <div class="search-box">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <circle cx="11" cy="11" r="8"></circle>
@@ -2174,9 +2174,6 @@ export function getPage(projectId, user = null) {
                         <span id="searchCount">0</span> projects found
                         <button class="clear-search" onclick="clearSearch()">Clear</button>
                     </div>
-                </div>
-                
-                <div class="top-bar-right">
                     <button class="btn-primary" onclick="openCreateModal()">+ New project</button>
                 </div>
             </div>
