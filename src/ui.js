@@ -1140,23 +1140,32 @@ export function getPage(projectId, user = null) {
             border-radius: 4px;
             font-size: 12px;
             font-weight: 600;
-            color: white;
+            border: 2px solid;
+            width: fit-content;
         }
         
         .priority-badge.p0 {
-            background: #ef4444;
+            background: #fee2e2;
+            border-color: #ef4444;
+            color: #dc2626;
         }
         
         .priority-badge.p1 {
-            background: #f97316;
+            background: #ffedd5;
+            border-color: #f97316;
+            color: #ea580c;
         }
         
         .priority-badge.p2 {
-            background: #eab308;
+            background: #fef9c3;
+            border-color: #eab308;
+            color: #ca8a04;
         }
         
         .priority-badge.p3 {
-            background: #22c55e;
+            background: #dcfce7;
+            border-color: #22c55e;
+            color: #16a34a;
         }
         
         /* Shipped Section */
