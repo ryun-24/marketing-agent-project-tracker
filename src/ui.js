@@ -1081,6 +1081,36 @@ export function getPage(projectId, user = null) {
             padding: 20px 0;
         }
         
+        .filter-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 8px 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+        
+        .filter-btn:hover {
+            background: var(--bg);
+            border-color: #d1d5db;
+        }
+        
+        .filter-btn.active {
+            background: #3b82f6;
+            color: white;
+            border-color: #3b82f6;
+        }
+        
         .all-project-row {
             display: grid;
             grid-template-columns: auto 2fr 1fr 1fr 0.8fr 1fr;
@@ -2303,6 +2333,17 @@ export function getPage(projectId, user = null) {
             <!-- All Projects View -->
             <div id="all-projects-view" style="visibility:hidden;position:absolute;top:0;left:0;width:100%;">
                 <div class="all-projects-container">
+                    <div class="filter-bar">
+                        <button class="filter-btn active" onclick="filterByCategory('all')">All</button>
+                        <button class="filter-btn" onclick="filterByCategory('Content Creation')">Content Creation</button>
+                        <button class="filter-btn" onclick="filterByCategory('Analytics')">Analytics</button>
+                        <button class="filter-btn" onclick="filterByCategory('Automation')">Automation</button>
+                        <button class="filter-btn" onclick="filterByCategory('SEO')">SEO</button>
+                        <button class="filter-btn" onclick="filterByCategory('Social Media')">Social Media</button>
+                        <button class="filter-btn" onclick="filterByCategory('Product')">Product</button>
+                        <button class="filter-btn" onclick="filterByCategory('Integration')">Integration</button>
+                        <button class="filter-btn" onclick="filterByCategory('AI/ML')">AI/ML</button>
+                    </div>
                     <div class="projects-list" id="allProjectsList">
                         <!-- Populated by JS -->
                     </div>
@@ -2460,6 +2501,20 @@ export function getPage(projectId, user = null) {
         let filteredProjects = [];
         let currentPriority = 'P0';
         let currentView = 'global';
+        let currentCategory = 'all';
+
+        function filterByCategory(category) {
+            currentCategory = category;
+            
+            // Update active button
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Render filtered projects
+            renderAllProjectsList();
+        }
 
         function switchView(view) {
             if (view === currentView) return;
@@ -2798,8 +2853,19 @@ export function getPage(projectId, user = null) {
                 return;
             }
             
-            // Render all projects with extended fields
-            const html = allProjects.map(p => renderAllProjectsRow(p)).join('');
+            // Filter by category
+            let displayProjects = allProjects;
+            if (currentCategory !== 'all') {
+                displayProjects = allProjects.filter(p => p.category === currentCategory);
+            }
+            
+            if (displayProjects.length === 0) {
+                container.innerHTML = '<div class="empty-state">No projects in ' + currentCategory + '</div>';
+                return;
+            }
+            
+            // Render filtered projects with extended fields
+            const html = displayProjects.map(p => renderAllProjectsRow(p)).join('');
             container.innerHTML = html;
         }
 
