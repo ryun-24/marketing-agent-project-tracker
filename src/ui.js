@@ -1092,6 +1092,57 @@ export function getPage(projectId, user = null) {
             padding: 20px 0;
         }
         
+        .all-project-row {
+            display: grid;
+            grid-template-columns: auto 2fr 1fr 1fr 0.8fr 1fr auto;
+            align-items: center;
+            gap: 16px;
+            padding: 16px;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            margin-bottom: 8px;
+        }
+        
+        .all-project-row:hover {
+            border-color: #d1d5db;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        }
+        
+        .all-project-info {
+            min-width: 0;
+        }
+        
+        .all-project-field {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+        
+        .field-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .field-value {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text);
+        }
+        
+        .priority-badge {
+            display: inline-block;
+            padding: 2px 8px;
+            background: var(--bg);
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+        
         /* Shipped Section */
         .shipped-section {
             background: var(--surface);
@@ -2344,22 +2395,22 @@ export function getPage(projectId, user = null) {
         
         // DEMO: Mock projects for visualization - always available
         const demoProjects = [
-            { id: 101, name: 'AI Content Generator v2', description: 'Automated content creation with GPT-4 integration', stage: 'now', status: 'on_track', owner: 'Sarah Chen', team: 'Content Team', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [
+            { id: 101, name: 'AI Content Generator v2', description: 'Automated content creation with GPT-4 integration', stage: 'now', status: 'on_track', owner: 'Sarah Chen', team: 'Content Team', requested_by: 'Marketing VP', category: 'Content Creation', priority: 'P0', last_assessed: '2026-06-28', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [
                 { update_type: 'Progress', content: 'API integration completed and tested', created_by: 'Sarah Chen', created_at: new Date().toISOString() },
                 { update_type: 'Feature', content: 'GPT-4 prompt templates finalized', created_by: 'Dev Team', created_at: new Date(Date.now() - 172800000).toISOString() }
             ], comments: [] },
-            { id: 102, name: 'Marketing Analytics Dashboard', description: 'Real-time campaign performance tracking', stage: 'now', status: 'at_risk', owner: 'Mike Johnson', team: 'Analytics', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'medium', description: 'API rate limiting issues', created_at: new Date().toISOString()}], updates: [
+            { id: 102, name: 'Marketing Analytics Dashboard', description: 'Real-time campaign performance tracking', stage: 'now', status: 'at_risk', owner: 'Mike Johnson', team: 'Analytics', requested_by: 'CMO', category: 'Analytics', priority: 'P0', last_assessed: '2026-06-27', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'medium', description: 'API rate limiting issues', created_at: new Date().toISOString()}], updates: [
                 { update_type: 'Design', content: 'Dashboard UI redesign finalized', created_by: 'Design Team', created_at: new Date(Date.now() - 86400000).toISOString() },
                 { update_type: 'Fix', content: 'Resolved rate limiting blocker', created_by: 'Mike Johnson', created_at: new Date(Date.now() - 259200000).toISOString() }
             ], comments: [] },
-            { id: 103, name: 'Email Automation Flow', description: 'Drip campaign sequences and A/B testing', stage: 'now', status: 'on_track', owner: 'Emily Wang', team: 'Growth', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [
+            { id: 103, name: 'Email Automation Flow', description: 'Drip campaign sequences and A/B testing', stage: 'now', status: 'on_track', owner: 'Emily Wang', team: 'Growth', requested_by: 'Growth Lead', category: 'Automation', priority: 'P0', last_assessed: '2026-06-29', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [
                 { update_type: 'Content', content: 'Email templates created for 5 campaigns', created_by: 'Emily Wang', created_at: new Date(Date.now() - 172800000).toISOString() }
             ], comments: [] },
-            { id: 104, name: 'SEO Optimization Tool', description: 'Keyword research and competitor analysis', stage: 'next', status: 'on_track', owner: 'David Park', team: 'SEO Team', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
-            { id: 105, name: 'Social Media Scheduler', description: 'Cross-platform posting with analytics', stage: 'next', status: 'blocked', owner: 'Lisa Kumar', team: 'Social', open_blockers: 2, updated_at: new Date().toISOString(), blockers: [{severity: 'high', description: 'Instagram API access denied', created_at: new Date().toISOString()}, {severity: 'medium', description: 'Rate limit exceeded', created_at: new Date().toISOString()}], updates: [], comments: [] },
-            { id: 106, name: 'Landing Page Builder', description: 'Drag-and-drop page creation tool', stage: 'later', status: 'on_track', owner: 'Tom Wilson', team: 'Product', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
-            { id: 107, name: 'CRM Integration', description: 'Salesforce and HubSpot connectors', stage: 'later', status: 'on_track', owner: 'Alex Rivera', team: 'Engineering', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
-            { id: 108, name: 'Video Transcription API', description: 'Automated video captioning service', stage: 'later', status: 'at_risk', owner: 'Nina Patel', team: 'AI Team', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'low', description: 'Accuracy below threshold', created_at: new Date().toISOString()}], updates: [], comments: [] }
+            { id: 104, name: 'SEO Optimization Tool', description: 'Keyword research and competitor analysis', stage: 'next', status: 'on_track', owner: 'David Park', team: 'SEO Team', requested_by: 'SEO Director', category: 'SEO', priority: 'P1', last_assessed: '2026-06-25', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 105, name: 'Social Media Scheduler', description: 'Cross-platform posting with analytics', stage: 'next', status: 'blocked', owner: 'Lisa Kumar', team: 'Social', requested_by: 'Social Media Manager', category: 'Social Media', priority: 'P1', last_assessed: '2026-06-26', open_blockers: 2, updated_at: new Date().toISOString(), blockers: [{severity: 'high', description: 'Instagram API access denied', created_at: new Date().toISOString()}, {severity: 'medium', description: 'Rate limit exceeded', created_at: new Date().toISOString()}], updates: [], comments: [] },
+            { id: 106, name: 'Landing Page Builder', description: 'Drag-and-drop page creation tool', stage: 'later', status: 'on_track', owner: 'Tom Wilson', team: 'Product', requested_by: 'Product Manager', category: 'Product', priority: 'P2', last_assessed: '2026-06-20', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 107, name: 'CRM Integration', description: 'Salesforce and HubSpot connectors', stage: 'later', status: 'on_track', owner: 'Alex Rivera', team: 'Engineering', requested_by: 'Sales VP', category: 'Integration', priority: 'P2', last_assessed: '2026-06-22', open_blockers: 0, updated_at: new Date().toISOString(), blockers: [], updates: [], comments: [] },
+            { id: 108, name: 'Video Transcription API', description: 'Automated video captioning service', stage: 'later', status: 'at_risk', owner: 'Nina Patel', team: 'AI Team', requested_by: 'Content Director', category: 'AI/ML', priority: 'P3', last_assessed: '2026-06-18', open_blockers: 1, updated_at: new Date().toISOString(), blockers: [{severity: 'low', description: 'Accuracy below threshold', created_at: new Date().toISOString()}], updates: [], comments: [] }
         ];
 
         // Check URL path for detail view
@@ -2749,9 +2800,45 @@ export function getPage(projectId, user = null) {
                 return;
             }
             
-            // Render all projects using the same row format as Global Board
-            const html = allProjects.map(p => renderProjectRow(p)).join('');
+            // Render all projects with extended fields
+            const html = allProjects.map(p => renderAllProjectsRow(p)).join('');
             container.innerHTML = html;
+        }
+
+        function renderAllProjectsRow(project) {
+            const initials = project.owner ? project.owner.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
+            const blockerText = project.open_blockers > 0 ? '⚠️ ' + project.open_blockers + ' blocker' + (project.open_blockers > 1 ? 's' : '') : '';
+            const lastAssessed = project.last_assessed ? new Date(project.last_assessed).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A';
+            
+            return [
+                '<div class="all-project-row" onclick="openDetail(' + project.id + ')">',
+                '    <div class="project-status-dot ' + project.status + '"></div>',
+                '    <div class="all-project-info">',
+                '        <div class="project-name">' + escapeHtml(project.name) + '</div>',
+                '        <div class="project-meta">' + escapeHtml(project.description || 'No description') + '</div>',
+                '    </div>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Requested by</div>',
+                '        <div class="field-value">' + escapeHtml(project.requested_by || 'Unknown') + '</div>',
+                '    </div>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Category</div>',
+                '        <div class="field-value">' + escapeHtml(project.category || 'Uncategorized') + '</div>',
+                '    </div>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Priority</div>',
+                '        <div class="field-value priority-badge">' + escapeHtml(project.priority || 'P3') + '</div>',
+                '    </div>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Last Assessed</div>',
+                '        <div class="field-value">' + lastAssessed + '</div>',
+                '    </div>',
+                '    <div class="project-owner-sm">',
+                '        <div class="owner-avatar-sm">' + initials + '</div>',
+                '        <span>' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                '    </div>',
+                '</div>'
+            ].join('');
         }
 
         function renderProjectRow(project) {
