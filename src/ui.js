@@ -873,7 +873,7 @@ export function getPage(projectId, user = null) {
         .top-bar-right {
             display: flex;
             align-items: center;
-            gap: 12px;
+            gap: 16px;
         }
         
         .team-avatars {
@@ -921,6 +921,7 @@ export function getPage(projectId, user = null) {
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
+            white-space: nowrap;
         }
         
         /* Stats Bar */
