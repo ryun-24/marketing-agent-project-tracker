@@ -2196,8 +2196,6 @@ export function getPage(projectId, user = null) {
                 <span class="stats-count" id="count-atrisk">1</span>
                 <span class="stats-dot blocked">●</span>
                 <span class="stats-count" id="count-blocked">0</span>
-                <span class="stats-dot unknown">●</span>
-                <span class="stats-count" id="count-unknown">9</span>
             </div>
 
             <!-- Views Container -->
