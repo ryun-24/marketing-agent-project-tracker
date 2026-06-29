@@ -2153,10 +2153,6 @@ export function getPage(projectId, user = null) {
                 <span>+</span> New project
             </button>
             
-            <div class="sidebar-search">
-                <input type="text" placeholder="Search..." id="sidebarSearch">
-            </div>
-            
             <nav class="sidebar-nav">
                 <a href="/" class="nav-item active" id="nav-global" onclick="switchView('global'); return false;">
                     <span class="nav-icon">🌐</span>
