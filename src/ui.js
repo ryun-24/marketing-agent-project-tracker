@@ -2198,11 +2198,6 @@ export function getPage(projectId, user = null) {
                 <span class="stats-count" id="count-blocked">0</span>
                 <span class="stats-dot unknown">●</span>
                 <span class="stats-count" id="count-unknown">9</span>
-                
-                <div class="view-toggle">
-                    <button class="view-btn active">⊞</button>
-                    <button class="view-btn">☰</button>
-                </div>
             </div>
 
             <!-- Views Container -->
