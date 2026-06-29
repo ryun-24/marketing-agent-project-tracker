@@ -2864,21 +2864,31 @@ export function getPage(projectId, user = null) {
         }
 
         function renderProjectRow(project) {
-            const initials = project.owner ? project.owner.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : '?';
-            const blockerText = project.open_blockers > 0 ? '⚠️ ' + project.open_blockers + ' blocker' + (project.open_blockers > 1 ? 's' : '') : '';
+            const lastAssessed = project.last_assessed ? new Date(project.last_assessed).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : 'N/A';
+            const priorityClass = (project.priority || 'P3').toLowerCase();
             
             return [
-                '<div class="project-row" onclick="openDetail(' + project.id + ')">',
+                '<div class="all-project-row" onclick="openDetail(' + project.id + ')">',
                 '    <div class="project-status-dot ' + project.status + '"></div>',
-                '    <div class="project-info">',
+                '    <div class="all-project-info">',
                 '        <div class="project-name">' + escapeHtml(project.name) + '</div>',
                 '        <div class="project-meta">' + escapeHtml(project.description || 'No description') + '</div>',
                 '    </div>',
-                '    <div class="project-team">' + escapeHtml(project.team || 'No team') + '</div>',
-                '    <div class="project-blockers">' + blockerText + '</div>',
-                '    <div class="project-owner-sm">',
-                '        <div class="owner-avatar-sm">' + initials + '</div>',
-                '        <span>' + escapeHtml(project.owner || 'Unassigned') + '</span>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Requested by</div>',
+                '        <div class="field-value">' + escapeHtml(project.requested_by || 'Unknown') + '</div>',
+                '    </div>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Category</div>',
+                '        <div class="field-value">' + escapeHtml(project.category || 'Uncategorized') + '</div>',
+                '    </div>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Priority</div>',
+                '        <div class="field-value priority-badge ' + priorityClass + '">' + escapeHtml(project.priority || 'P3') + '</div>',
+                '    </div>',
+                '    <div class="all-project-field">',
+                '        <div class="field-label">Last Assessed</div>',
+                '        <div class="field-value">' + lastAssessed + '</div>',
                 '    </div>',
                 '</div>'
             ].join('');
